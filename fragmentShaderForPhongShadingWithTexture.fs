@@ -45,7 +45,7 @@ struct SpotLight {
 
 
 
-#define NR_POINT_LIGHTS 2
+#define NR_POINT_LIGHTS 3
 
 in vec3 FragPos;
 in vec3 Normal;
@@ -71,7 +71,7 @@ void main()
     vec3 result;
     // point lights
     for(int i = 0; i < NR_POINT_LIGHTS; i++)
-    result += CalcPointLight(material, pointLights[i], N, FragPos, V);
+        result += CalcPointLight(material, pointLights[i], N, FragPos, V);
 
     result += CalcDirLight(material, dirLight, N, FragPos, V);
     
