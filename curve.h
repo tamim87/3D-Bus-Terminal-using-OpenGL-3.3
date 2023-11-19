@@ -2,7 +2,7 @@
 //  curve.h
 //  test
 //
-//  Created by Nazirul Hasan on 4/10/23.
+//  Created by Papon
 //
 
 #ifndef curve_h
@@ -25,10 +25,16 @@ public:
     vector <float> normals;
     vector <int> indices;
     vector <float> vertices;
+    vector<float> texCoords;
     const double pi = 3.14159265389;
     const int nt = 40;
     const int ntheta = 20;
-    Curve(vector<float>& tmp)
+    // Texture properties
+    unsigned int diffuseMap;
+    unsigned int specularMap;
+    float shininess;
+    Curve(vector<float>& tmp, unsigned int dMap, unsigned int sMap, float shiny)
+        : diffuseMap(dMap), specularMap(sMap), shininess(shiny)
     {
         this->cntrlPoints = tmp;
         this->fishVAO = hollowBezier(cntrlPoints.data(), ((unsigned int)cntrlPoints.size() / 3) - 1);
@@ -47,15 +53,6 @@ public:
     }
     void draw(Shader& lightingShader, glm::mat4 model, glm::vec3 amb)
     {
-        /// Fish
-
-        //lightingShader.use();
-        //lightingShader.setMat4("model", model);
-        //lightingShader.setVec3("material.ambient", glm::vec3(1.0f, 0.6f, 0.0f));
-        //lightingShader.setVec3("material.diffuse", glm::vec3(1.0f, 0.6f, 0.0f));
-        //lightingShader.setVec3("material.specular", glm::vec3(1.0f, 1.0f, 1.0f));
-        //lightingShader.setFloat("material.shininess", 32.0f);
-
         lightingShader.use();
         lightingShader.setMat4("model", model);
         lightingShader.setVec3("material.ambient", amb);
@@ -63,16 +60,23 @@ public:
         lightingShader.setVec3("material.specular", glm::vec3(0.5f, 0.5f, 0.5f));
         lightingShader.setFloat("material.shininess", 32.0f);
 
+        // Set texture properties
+        lightingShader.setInt("material.diffuseMap", 0);  // 0 corresponds to GL_TEXTURE0
+        lightingShader.setInt("material.specularMap", 1); // 1 corresponds to GL_TEXTURE1
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, diffuseMap);
+
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, specularMap);
+
         glBindVertexArray(fishVAO);
-        glDrawElements(GL_TRIANGLES,                    // primitive type
-            (unsigned int)indices.size(),          // # of indices
-            GL_UNSIGNED_INT,                 // data type
-            (void*)0);                       // offset to indices
+        glDrawElements(GL_TRIANGLES, (unsigned int)indices.size(), GL_UNSIGNED_INT, (void*)0);
 
         // unbind VAO
         glBindVertexArray(0);
-        /// End Fish
     }
+
 private:
     unsigned int fishVAO;
     unsigned int bezierVAO;
@@ -135,18 +139,18 @@ private:
     unsigned int hollowBezier(GLfloat ctrlpoints[], int L)
     {
         int i, j;
-        float x, y, z, r;                //current coordinates
+        float x, y, z, r;                // current coordinates
         float theta;
         float nx, ny, nz, lengthInv;    // vertex normal
+        float u, v;                     // texture coordinates
 
-
-        const float dtheta = 2 * pi / ntheta;        //angular step size
+        const float dtheta = 2 * pi / ntheta;        // angular step size
 
         float t = 0;
         float dt = 1.0 / nt;
         float xy[2];
 
-        for (i = 0; i <= nt; ++i)              //step through y
+        for (i = 0; i <= nt; ++i)              // step through y
         {
             BezierCurve(t, xy, ctrlpoints, L);
             r = xy[0];
@@ -176,6 +180,12 @@ private:
                 normals.push_back(ny);
                 normals.push_back(nz);
 
+                // Calculate texture coordinates (s, t)
+                u = static_cast<float>(j) / ntheta;
+                v = static_cast<float>(i) / nt;
+                texCoords.push_back(u);
+                texCoords.push_back(v);
+
                 theta += dtheta;
             }
         }
@@ -204,18 +214,27 @@ private:
                 indices.push_back(k2 + 1);
             }
         }
-
+       
         size_t count = coordinates.size();
-        for (int i = 0; i < count; i += 3)
+        for (i = 0, j = 0; i < count; i += 3, j += 2)
         {
             //cout << count << ' ' << i + 2 << endl;
             vertices.push_back(coordinates[i]);
             vertices.push_back(coordinates[i + 1]);
             vertices.push_back(coordinates[i + 2]);
 
-            vertices.push_back(normals[i]);
-            vertices.push_back(normals[i + 1]);
-            vertices.push_back(normals[i + 2]);
+            if (i < normals.size())
+                vertices.push_back(normals[i]);
+            if (i + 1 < normals.size())
+                vertices.push_back(normals[i + 1]);
+            if (i + 2 < normals.size())
+                vertices.push_back(normals[i + 2]);
+
+            //// Add texture coordinates
+            //if (j < texCoords.size())
+            //    vertices.push_back(texCoords[j]);
+            //if (j + 1 < texCoords.size())
+            //    vertices.push_back(texCoords[j + 1]);
         }
 
         glGenVertexArrays(1, &bezierVAO);
@@ -240,12 +259,13 @@ private:
         // activate attrib arrays
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
-
+        glEnableVertexAttribArray(2);
         // set attrib arrays with stride and offset
-        int stride = 24;     // should be 24 bytes
+        int stride = 24;  // should be 24 bytes
         glVertexAttribPointer(0, 3, GL_FLOAT, false, stride, (void*)0);
         glVertexAttribPointer(1, 3, GL_FLOAT, false, stride, (void*)(sizeof(float) * 3));
-
+        glVertexAttribPointer(2, 2, GL_FLOAT, false, stride, (void*)(sizeof(float) * 6)); // Add this line for texture coordinates
+//
         // unbind VAO, VBO and EBO
         glBindVertexArray(0);
         glBindBuffer(GL_ARRAY_BUFFER, 0);

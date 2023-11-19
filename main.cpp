@@ -50,11 +50,12 @@ void Floor(Cube& cube, Shader& lightingShader, glm::mat4 alTogether);
 //void ladder(Cube& cube, Shader& lightingShader, glm::mat4 alTogether);
 //void Ladder(Cube& cube, Shader& lightingShader, glm::mat4 alTogether);//Main one
 
-//void bus(Cube& cube, Shader& lightingShaderTexture, glm::mat4 alTogether);
-void bus(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Cube& cube_cyl, Shader& lightingShader, Shader& lightingShaderTexture, glm::mat4 alTogether);
+//void bus(Cube& cube, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
+void bus(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Cube& cube_cyl, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
 void Wheel(Curve& curve_cyl, Curve& curve_circle, Shader& lightingShader, glm::mat4 alTogether);
-void Wheel_hollow(Curve& curve_cyl, Curve& curve_hollow_cyl, Cube& cube, Shader& lightingShader, Shader& lightingShaderTexture, glm::mat4 alTogether);
-
+void Wheel_hollow(Curve& curve_cyl, Curve& curve_hollow_cyl, Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
+void terminal(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
+void lobby(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
 
 
 glm::mat4 transform(float tr_x, float tr_y, float tr_z, float rot_x, float rot_y, float rot_z, float scal_x, float scal_y, float scal_z) {
@@ -114,12 +115,12 @@ glm::vec3 V = glm::vec3(0.0f, 1.0f, 0.0f);
 // lights
 // positions of the point lights
 glm::vec3 LightPositions[] = {
-    glm::vec3(30.0, 20.0, 25.0), //directional light1 - white
+    glm::vec3(35.0, 20.0, 35.0), //directional light1 - white
     glm::vec3(-5.12181 ,4.92 ,13.1597), //spot light - red
     glm::vec3(-6.75269 ,4.92 ,2.44401), //point light1 - green
     glm::vec3(8 ,14.0 ,-4), //point light2 - blue
     glm::vec3(4.36687 ,14.0 ,5.62477 ), //point light3 - yellow
-    glm::vec3(-30.0, 20.0, -25.0) //directional light2 - grey
+    glm::vec3(-35.0, 20.0, -35.0) //directional light2 - grey
 };
 DirLight dirlight1(
     LightPositions[0].x, LightPositions[0].y, LightPositions[0].z,  // position
@@ -374,12 +375,16 @@ int main()
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
-    Curve wheel(wheel_vertices);
-    Curve wheel_hollow(hollow_cyllinder_vertices);
+    /*Curve wheel(wheel_vertices);*/
+    //Curve wheel_hollow(hollow_cyllinder_vertices);
 
-    wheel_pointer = &wheel;
-    Curve wheel_lid(wheel_lid_vertices);
-    wheel_lid_pointer = &wheel_lid;
+    //wheel_pointer = &wheel;
+    //Curve wheel_lid(wheel_lid_vertices);
+    //wheel_lid_pointer = &wheel_lid;
+    
+    Curve wheel(wheel_vertices, black_tex,black_tex, 1.0f);
+    Curve wheel_hollow(hollow_cyllinder_vertices, black_tex, black_tex, 1.0f);
+
 
     
     // render loop
@@ -445,7 +450,7 @@ int main()
 
         //Floor
         //translateMatrix = glm::translate(identityMatrix, glm::vec3(-25.2967, -0.9099926, 0.6557));
-        translateMatrix = glm::translate(identityMatrix, glm::vec3(-30.0f,0.0f,-25.0f));
+        translateMatrix = glm::translate(identityMatrix, glm::vec3(-30.0f,0.0f,-30.0f));
         Floor(tiles_cube, lightingShaderWithTexture, translateMatrix);
 
 
@@ -635,14 +640,22 @@ int main()
 //basic wheel
 //model = transform(0.0f, 0.0f, 5.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
 //Wheel(wheel, wheel_lid, lightingShader, model);
-
+//
 //hollow wheel
 //model = transform(-2.0f, 0.0f, 5.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
 //Wheel_hollow(wheel, wheel_hollow, cube,lightingShader, lightingShaderWithTexture, model);
 
-        model = transform(0.0f, 2.68f, -15.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+        
+        model = transform(-27.0f, 1.15f, -20.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
         //bus(cube, lightingShaderWithTexture, model);
         bus(cube, wheel, wheel_hollow, cube_cyl, lightingShader, lightingShaderWithTexture, model);
+
+        model = transform(0.0f, 0.0f, -10.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+        terminal(cube, lightingShader, lightingShaderWithTexture, model);
+
+        model = transform(-20.0f, 0.0f, -10.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+        lobby(cube, lightingShader, lightingShaderWithTexture, model);
+
 
 
 
@@ -1067,37 +1080,206 @@ void Wheel(Curve& curve_cyl, Curve& curve_circle, Shader& lightingShader, glm::m
     curve_circle.draw(lightingShader, alTogether * model, glm::vec3(0.32f, 0.32f, 0.32f));
 }
 
-void Wheel_hollow(Curve& curve_cyl, Curve& curve_hollow_cyl, Cube& cube_cyl, Shader& lightingShader, Shader& lightingShaderTexture, glm::mat4 alTogether)
+void Wheel_hollow(Curve& curve_cyl, Curve& curve_hollow_cyl, Cube& cube_cyl, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether)
 {
     glm::mat4 model;
 
     //cyllinder
     model = transform(0, 0, 0, 0, 0, 0, 1, 1, 1);
-    curve_cyl.draw(lightingShader, alTogether * model, glm::vec3(0.0f, 0.0f, 0.0f));
+    curve_cyl.draw(lightingShaderWithTexture, alTogether * model, glm::vec3(0.0f, 0.0f, 0.0f));
 
     //hollow cyllinder front
     model = transform(0, 2.23, 0, 0, 0, 0, .465, .05, .465);
-    curve_hollow_cyl.draw(lightingShader, alTogether * model, glm::vec3(0.561f, 0.561f, 0.561f));
+    curve_hollow_cyl.draw(lightingShaderWithTexture, alTogether * model, glm::vec3(1.0f,0.0f,0.0f));
 
     //hollow cyllinder back
     model = transform(0, .945, 0, 0, 0, 0, .4575, .05, .4575);
-    curve_hollow_cyl.draw(lightingShader, alTogether * model, glm::vec3(0.561f, 0.561f, 0.561f));
+    curve_hollow_cyl.draw(lightingShaderWithTexture, alTogether * model, glm::vec3(1.0f, 0.0f, 0.0f));
 
     //wheel center cube1 for texture(front)
     model = transform(-0.4, 2.25, -0.4, 0, 0, 0, 0.8, .04, 0.8);
     cube_cyl.setTextureProperty(cushion_tex, cushion_tex, 32.0f);
-    cube_cyl.drawCubeWithTexture(lightingShaderTexture, alTogether * model);
+    cube_cyl.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
 
     //wheel center cube2 for texture(back)
     model = transform(-0.4, 1.07, -0.4, 0, 0, 0, 0.8, .04, 0.8);
     cube_cyl.setTextureProperty(cushion_tex, cushion_tex, 32.0f);
-    cube_cyl.drawCubeWithTexture(lightingShaderTexture, alTogether * model);
+    cube_cyl.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
 
 
 }
 
-//void bus(Cube& cube, Shader& lightingShaderTexture, glm::mat4 alTogether)
-void bus(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Cube& cube_cyl, Shader& lightingShader, Shader& lightingShaderTexture, glm::mat4 alTogether)
+void lobby(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether)
+{
+    glm::mat4 model;
+    ////surface
+    //model = transform(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, p1 + p2 + p3 + p4 + p5, floor_y, floor_z + panel_z);
+    //cube.setTextureProperty(black_tex, black_tex, 32.0f);
+    //cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+
+    //surface
+    model = transform(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, p1 + p2 + p3 + p4 + p5, floor_y, floor_z + panel_z);
+    cube.setTextureProperty(black_tex, black_tex, 32.0f);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+
+
+}
+
+void terminal(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether)
+{
+    glm::mat4 model;
+
+    float p1 = 1.0f;
+    float p2 = 2.5f;
+    float p3 = 8.0f;
+    float p4 = 2.5f;
+    float p5 = 1.0f;
+    float panel_y = 5.0f;
+    float panel_z = 0.35f;
+
+    float floor_x = p1 + p2 + p3 + p4 + p5;
+    float floor_y = 0.35f;
+    float floor_z = 5.0f;
+
+    float front_x = 0.35f;
+    float front_y = floor_y + 5.0f;
+    float front_z = 5.0f;
+    
+    ////surface
+    //model = transform(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, p1 + p2 + p3 + p4 + p5, floor_y, floor_z + panel_z);
+    //cube.setTextureProperty(black_tex, black_tex, 32.0f);
+    //cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+
+
+    //surface l1
+    model = transform(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 20.0f, .35f, 8.0f);
+    cube.setTextureProperty(black_tex, black_tex, 32.0f);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+
+    //vertical surface l1
+    model = transform(20.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 9.0f, .35f, 24.0f);
+    cube.setTextureProperty(black_tex, black_tex, 32.0f);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+
+    //surface l2
+    model = transform(0.0f, 8.0f, 0.0f, 0.0f, 0.0f, 0.0f, 20.0f, .35f, 8.0f);
+    cube.setTextureProperty(black_tex, black_tex, 32.0f);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+
+    //vertical surface l2
+    model = transform(20.0f, 8.0f, 0.0f, 0.0f, 0.0f, 0.0f, 9.0f, .35f, 24.0f);
+    cube.setTextureProperty(black_tex, black_tex, 32.0f);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+
+
+    //fence l1
+    float f = 0;
+    //fence back l1
+    float t = 0;
+    for (int j = 0; j< 5; j++)
+    {
+        f = 0;
+        cube.setTextureProperty(black_tex, black_tex, 32.0f);
+        model = transform(0.0f+t, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, .3, 8.0f, .3f);
+        cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+        model = transform(5.0f+t, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, .3f, 8.0f, 0.3f);
+        cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+
+        for (int i = 0; i < 14; i++)
+        {
+            //rail l1
+            model = transform(0.3f+t, 0.0f + (f), 0.0f, 0.0f, 0.0f, 0.0f, 4.7f, 0.4f, .1f);
+            cube.setTextureProperty(ch_wood_tex, ch_wood_tex, 32.0f);
+            cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+            f += .6;
+        }
+        t += 6;
+    }
+
+    //fence right l1
+    glm::mat4 tr;
+    tr = transform(29.0f, 0.0f, 0.6f, 0.0f, -90.0f, 0.0f, 1.0, 1.0f, 1.0f);
+    t = 0;
+    for (int j = 0; j < 4; j++)
+    {
+        f = 0;
+        cube.setTextureProperty(black_tex, black_tex, 32.0f);
+        model = transform(0.0f + t, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, .3, 8.0f, .3f);
+        cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * tr * model);
+        model = transform(5.0f + t, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, .3f, 8.0f, 0.3f);
+        cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * tr * model);
+
+        for (int i = 0; i < 14; i++)
+        {
+            //rail l1
+            model = transform(0.3f + t, 0.0f + (f), 0.0f, 0.0f, 0.0f, 0.0f, 4.7f, 0.4f, .1f);
+            cube.setTextureProperty(ch_wood_tex, ch_wood_tex, 32.0f);
+            cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * tr * model);
+            f += .6;
+        }
+        t += 6;
+    }
+
+    
+    cube.setTextureProperty(black_tex, black_tex, 32.0f);
+    model = transform(0.0f, 0.0f, 8.0f-.3f, 0.0f, 0.0f, 0.0f, .3, 8.0f, .3f);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+    model = transform(11.0f, 0.0f, 8.0f-.3f, 0.0f, 0.0f, 0.0f, .3f, 8.0f, 0.3f);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+    model = transform(20.0f, 0.0f, 8.0f-.3f, 0.0f, 0.0f, 0.0f, .3f, 8.0f, 0.3f);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+    model = transform(20.0f, 0.0f, 24.0f-.3f, 0.0f, 0.0f, 0.0f, .3f, 8.0f, 0.3f);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+
+
+
+
+
+    //stairs
+    //f = 0;    
+    //for (int i = 0; i < 10; i++)
+    //{
+    //    //rail l1
+    //    model = transform(27.0f, 0.0f + (f), 1.0f + (f), 0.0f, 0.0f, 0.0f, 5.0f, 0.35f, 1.0f);
+    //    cube.setTextureProperty(cushion_tex, cushion_tex, 32.0f);
+    //    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+    //    f += 1;
+    //}
+
+
+
+
+
+
+
+
+    ////fence l2
+    //f = 0;
+    //for (int i = 0; i < 28; i++)
+    //{
+    //    //rail l1
+    //    model = transform(0.0f+(f), 8.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.35f, 9.0f, 1.0f);
+    //    cube.setTextureProperty(cushion_tex, cushion_tex, 32.0f);
+    //    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+    //    f += 1;
+    //}
+    //f = 0;
+    //for (int i = 0; i < 23; i++)
+    //{
+    //    //rail l1
+    //    model = transform(27.0f , 8.0f, 1.0f + (f), 0.0f, 0.0f, 0.0f, 1.0f, 9.0f, 0.35f);
+    //    cube.setTextureProperty(cushion_tex, cushion_tex, 32.0f);
+    //    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+    //    f += 1;
+    //}
+
+    
+
+
+}
+
+//void bus(Cube& cube, Shader& lightingShaderWithTexture, glm::mat4 alTogether)
+void bus(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Cube& cube_cyl, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether)
 {
     //glm::mat4 identityMatrix = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
     //glm::mat4 translateMatrix, rotateXMatrix, rotateYMatrix, rotateZMatrix, scaleMatrix, model;
@@ -1154,44 +1336,44 @@ void bus(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Cube& cube_cyl, 
     //bus floor
     model = transform(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, p1 + p2 + p3 + p4 + p5, floor_y, floor_z + panel_z);
     cube.setTextureProperty(black_tex, black_tex, 32.0f);
-    cube.drawCubeWithTexture(lightingShaderTexture, alTogether * model);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
 
     //bus ceiling
     model = transform(0.0f - front_x, 0.0f + front_y, 0.0f, 0.0f, 0.0f, 0.0f, p1 + p2 + p3 + p4 + p5 + (2 * front_x), panel_z, panel_y + (panel_z));
     cube.setTextureProperty(black_tex, black_tex, 32.0f);
-    cube.drawCubeWithTexture(lightingShaderTexture, alTogether * model);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
 
     //bus front
     model = transform(0.0f - front_x, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, front_x, front_y, front_z + panel_z);
-    cube.setTextureProperty(cushion_tex, cushion_tex, 32.0f);
-    cube.drawCubeWithTexture(lightingShaderTexture, alTogether * model);
+    cube.setTextureProperty(almari_tex, almari_tex, 32.0f);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
 
     //front window
     model = transform(0.0f - front_x - .1, 2.3f, 0.38f, 0.0f, 0.0f, 0.0f, front_x - .05, front_y / 2, front_z - .45);
     cube.setTextureProperty(black_tex, black_tex, 32.0f);
-    cube.drawCubeWithTexture(lightingShaderTexture, alTogether * model);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
 
     //front headlight1
     model = transform(0.0f - front_x - .1, 0.5f, 0.38f, 0.0f, 0.0f, 0.0f, front_x - .05, 0.5f, 1.0f);
     cube.setTextureProperty(black_tex, black_tex, 32.0f);
-    cube.drawCubeWithTexture(lightingShaderTexture, alTogether * model);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
 
     //front headlight2
     model = transform(0.0f - front_x - .1, 0.5f, 4.0f, 0.0f, 0.0f, 0.0f, front_x - .05, 0.5f, 1.0f);
     cube.setTextureProperty(black_tex, black_tex, 32.0f);
-    cube.drawCubeWithTexture(lightingShaderTexture, alTogether * model);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
 
 
 
     //bus back 
     model = transform(0.0f + floor_x, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, front_x, front_y, front_z + panel_z);
-    cube.setTextureProperty(cushion_tex, cushion_tex, 32.0f);
-    cube.drawCubeWithTexture(lightingShaderTexture, alTogether * model);
+    cube.setTextureProperty(almari_tex, almari_tex, 32.0f);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
 
     //back window
     model = transform(0.0f - front_x + floor_x + .45, 2.3f, 0.38f, 0.0f, 0.0f, 0.0f, front_x - .05, front_y / 2, front_z - .45);
     cube.setTextureProperty(black_tex, black_tex, 32.0f);
-    cube.drawCubeWithTexture(lightingShaderTexture, alTogether * model);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
 
 
 
@@ -1199,37 +1381,37 @@ void bus(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Cube& cube_cyl, 
         //first part
     model = transform(0.0f, 0.0f + floor_y, 0.0f, 0.0f, 0.0f, 0.0f, p1, panel_y, panel_z);
     cube.setTextureProperty(almari_tex, almari_tex, 32.0f);
-    cube.drawCubeWithTexture(lightingShaderTexture, alTogether * model);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
 
     //front door
     model = transform(p1, 0.0f + floor_y, 0.0f, 0.0f, 0.0f + door_angle, 0.0f, p2, panel_y, panel_z);
     cube.setTextureProperty(ch_wood_tex, ch_wood_tex, 32.0f);
-    cube.drawCubeWithTexture(lightingShaderTexture, alTogether * model);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
 
     //middle
     model = transform(p1 + p2, 0.0f + floor_y, 0.0f, 0.0f, 0.0f, 0.0f, p3, panel_y, panel_z);
     cube.setTextureProperty(almari_tex, almari_tex, 32.0f);
-    cube.drawCubeWithTexture(lightingShaderTexture, alTogether * model);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
 
     //back door
     model = transform(p1 + p2 + p3, 0.0f + floor_y, 0.0f, 0.0f, 0.0f + door_angle, 0.0f, p4, panel_y, panel_z);
     cube.setTextureProperty(ch_wood_tex, ch_wood_tex, 32.0f);
-    cube.drawCubeWithTexture(lightingShaderTexture, alTogether * model);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
 
     //last part
     model = transform(p1 + p2 + p3 + p4, 0.0f + floor_y, 0.0f, 0.0f, 0.0f, 0.0f, p5, panel_y, panel_z);
     cube.setTextureProperty(almari_tex, almari_tex, 32.0f);
-    cube.drawCubeWithTexture(lightingShaderTexture, alTogether * model);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
 
     //back window1
     model = transform(p1 + p2 + .5, panel_y / 2.3 + floor_y, 0.0f - .1, 0.0f, 0.0f, 0.0f, front_z - 1.8, front_y / 2, front_x - .05);
     cube.setTextureProperty(black_tex, black_tex, 32.0f);
-    cube.drawCubeWithTexture(lightingShaderTexture, alTogether* model);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether* model);
 
     //back window2
     model = transform(p1 + p2 + 4.2, panel_y / 2.3 + floor_y, 0.0f - .1, 0.0f, 0.0f, 0.0f, front_z - 1.8, front_y / 2, front_x - .05);
     cube.setTextureProperty(black_tex, black_tex, 32.0f);
-    cube.drawCubeWithTexture(lightingShaderTexture, alTogether* model);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether* model);
 
 
 
@@ -1239,73 +1421,73 @@ void bus(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Cube& cube_cyl, 
         //first part
     model = transform(0.0f, 0.0f + floor_y, 0.0f + floor_z, 0.0f, 0.0f, 0.0f, p1, panel_y, panel_z);
     cube.setTextureProperty(almari_tex, almari_tex, 32.0f);
-    cube.drawCubeWithTexture(lightingShaderTexture, alTogether * model);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
     //
         //front door
     model = transform(p1, 0.0f + floor_y, 0.0f + floor_z, 0.0f, 0.0f - door_angle, 0.0f, p2, panel_y, panel_z);
     cube.setTextureProperty(ch_wood_tex, ch_wood_tex, 32.0f);
-    cube.drawCubeWithTexture(lightingShaderTexture, alTogether * model);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
     //
         //middle
     model = transform(p1 + p2, 0.0f + floor_y, 0.0f + floor_z, 0.0f, 0.0f, 0.0f, p3, panel_y, panel_z);
     cube.setTextureProperty(almari_tex, almari_tex, 32.0f);
-    cube.drawCubeWithTexture(lightingShaderTexture, alTogether * model);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
     //
         //back door
     model = transform(p1 + p2 + p3, 0.0f + floor_y, 0.0f + floor_z, 0.0f, 0.0f - door_angle, 0.0f, p4, panel_y, panel_z);
     cube.setTextureProperty(ch_wood_tex, ch_wood_tex, 32.0f);
-    cube.drawCubeWithTexture(lightingShaderTexture, alTogether * model);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
     //
         //last part
     model = transform(p1 + p2 + p3 + p4, 0.0f + floor_y, 0.0f + floor_z, 0.0f, 0.0f, 0.0f, p5, panel_y, panel_z);
     cube.setTextureProperty(almari_tex, almari_tex, 32.0f);
-    cube.drawCubeWithTexture(lightingShaderTexture, alTogether* model);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether* model);
 
     //front window1
     model = transform(p1 + p2 + .5, panel_y / 2.3 + floor_y, 0.0f + floor_z + .1, 0.0f, 0.0f, 0.0f, front_z - 1.8, front_y / 2, front_x - .05);
     cube.setTextureProperty(black_tex, black_tex, 32.0f);
-    cube.drawCubeWithTexture(lightingShaderTexture, alTogether* model);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether* model);
 
     //front window2
     model = transform(p1 + p2 + 4.2, panel_y / 2.3 + floor_y, 0.0f + floor_z + .1, 0.0f, 0.0f, 0.0f, front_z - 1.8, front_y / 2, front_x - .05);
     cube.setTextureProperty(black_tex, black_tex, 32.0f);
-    cube.drawCubeWithTexture(lightingShaderTexture, alTogether* model);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether* model);
 
 
-    //test cube
-    model = transform(p1 + p2 + 4.2, panel_y / 2.3 + floor_y, 0.0f + floor_z + .1 + 1, 0.0f, 0.0f, 0.0f, front_z - 1.8, front_y / 2, front_x - .05);
-    //cube.setTextureProperty(black_tex, black_tex, 32.0f);
-    //cube.drawCubeWithTexture(lightingShaderTexture, alTogether* model);
-    cube.setMaterialisticProperty(glm::vec3(1.0f, 0.0f, 0.0f));
-    cube.drawCubeWithMaterialisticProperty(lightingShader, alTogether * model);
+    ////test cube
+    //model = transform(p1 + p2 + 4.2, panel_y / 2.3 + floor_y, 0.0f + floor_z + .1 + 1, 0.0f, 0.0f, 0.0f, front_z - 1.8, front_y / 2, front_x - .05);
+    ////cube.setTextureProperty(black_tex, black_tex, 32.0f);
+    ////cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether* model);
+    //cube.setMaterialisticProperty(glm::vec3(1.0f, 0.0f, 0.0f));
+    //cube.drawCubeWithMaterialisticProperty(lightingShader, alTogether * model);
 
     
 
     float w_x = 3.6f;
-    float w_y = -1.18f;
+    float w_y = -1.18f+1.0f;
     float w_z = 3.1f;
     
-    float w_sx = 1.9f;
+    float w_sx = 1.3f;
     float w_sy = 1.0f;
-    float w_sz = 1.9f;
+    float w_sz = 1.3f;
 
 
 
-    ////front wheel1
-    //model = transform(w_x, w_y, w_z, 90.0f, 0.0f, 0.0f, w_sx, w_sy, w_sz);
-    //Wheel_hollow(curve_cyl, curve_hollow_cyl, cube_cyl, lightingShader, lightingShaderTexture, alTogether* model);
+    //front wheel1
+    model = transform(w_x, w_y, w_z, 90.0f, 0.0f, 0.0f, w_sx, w_sy, w_sz);
+    Wheel_hollow(curve_cyl, curve_hollow_cyl, cube_cyl, lightingShader, lightingShaderWithTexture, alTogether* model);
 
-    ////front wheel2
-    //model = transform(w_x + 8.2f, w_y, w_z, 90.0f, 0.0f, 0.0f, w_sx, w_sy, w_sz);
-    //Wheel_hollow(curve_cyl, curve_hollow_cyl, cube_cyl, lightingShader, lightingShaderTexture, alTogether* model);
-
-    ////back wheel1
-    //model = transform(w_x, w_y, w_z-floor_z+0.8, 90.0f, 0.0f, 0.0f, w_sx, w_sy, w_sz);
-    //Wheel_hollow(curve_cyl, curve_hollow_cyl, cube_cyl, lightingShader, lightingShaderTexture, alTogether* model);
-
-    ////back wheel2
-    //model = transform(w_x + 8.2f, w_y, w_z-floor_z+0.8, 90.0f, 0.0f, 0.0f, w_sx, w_sy, w_sz);
-    //Wheel_hollow(curve_cyl, curve_hollow_cyl, cube_cyl, lightingShader, lightingShaderTexture, alTogether* model);
+    //front wheel2
+    model = transform(w_x + 8.2f, w_y, w_z, 90.0f, 0.0f, 0.0f, w_sx, w_sy, w_sz);
+    Wheel_hollow(curve_cyl, curve_hollow_cyl, cube_cyl, lightingShader, lightingShaderWithTexture, alTogether* model);
+//
+    //back wheel1
+    model = transform(w_x, w_y, w_z-floor_z+0.8, 90.0f, 0.0f, 0.0f, w_sx, w_sy, w_sz);
+    Wheel_hollow(curve_cyl, curve_hollow_cyl, cube_cyl, lightingShader, lightingShaderWithTexture, alTogether* model);
+    //
+    //back wheel2
+    model = transform(w_x + 8.2f, w_y, w_z-floor_z+0.8, 90.0f, 0.0f, 0.0f, w_sx, w_sy, w_sz);
+    Wheel_hollow(curve_cyl, curve_hollow_cyl, cube_cyl, lightingShader, lightingShaderWithTexture, alTogether* model);
 
 
 
@@ -1313,12 +1495,11 @@ void bus(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Cube& cube_cyl, 
     ////test strip
     //model = transform(0.0f, 0.0f, -2.0f, 0.0f, 0.0f, 0.0f, 10.0f, .5f, 1.0f);
     //cube.setTextureProperty(almari_tex, almari_tex, 32.0f);
-    ////demo->drawCubeWithTexture(lightingShaderTexture, alTogether * model);
-    //cube.drawCubeWithTexture(lightingShaderTexture, alTogether * model);
+    ////demo->drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+    //cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
 
 
 }
-
 
 
 
@@ -1437,7 +1618,7 @@ void Floor(Cube& cube, Shader& lightingShader, glm::mat4 alTogether)
     rotateXMatrix = glm::rotate(identityMatrix, glm::radians(rotateAngle_X), glm::vec3(1.0f, 0.0f, 0.0f));
     rotateYMatrix = glm::rotate(identityMatrix, glm::radians(rotateAngle_Y), glm::vec3(0.0f, 1.0f, 0.0f));
     rotateZMatrix = glm::rotate(identityMatrix, glm::radians(rotateAngle_Z), glm::vec3(0.0f, 0.0f, 1.0f));
-    scaleMatrix = glm::scale(identityMatrix, glm::vec3(60.0f, 1.0f, 50.0f));
+    scaleMatrix = glm::scale(identityMatrix, glm::vec3(60.0f, 1.0f, 60.0f));
     //model = translateMatrix * rotateXMatrix * rotateYMatrix * rotateZMatrix * scaleMatrix;
     model = translateMatrix * scaleMatrix;
     //model = scaleMatrix * translateMatrix;
