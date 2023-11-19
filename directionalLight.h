@@ -37,13 +37,25 @@ public:
     void setUpPointLight(Shader& lightingShader)
     {
         lightingShader.use();
-        lightingShader.setVec3("dirLight.position", position);
-        lightingShader.setVec3("dirLight.ambient", ambientOn * ambient);
-        lightingShader.setVec3("dirLight.diffuse", diffuseOn * diffuse);
-        lightingShader.setVec3("dirLight.specular", specularOn * specular);
-        lightingShader.setFloat("dirLight.k_c", k_c);
-        lightingShader.setFloat("dirLight.k_l", k_l);
-        lightingShader.setFloat("dirLight.k_q", k_q);
+
+        if (lightNumber == 1) {
+            lightingShader.setVec3("dirLight[0].position", position);
+            lightingShader.setVec3("dirLight[0].ambient", ambientOn * ambient);
+            lightingShader.setVec3("dirLight[0].diffuse", diffuseOn * diffuse);
+            lightingShader.setVec3("dirLight[0].specular", specularOn * specular);
+            lightingShader.setFloat("dirLight[0].k_c", k_c);
+            lightingShader.setFloat("dirLight[0].k_l", k_l);
+            lightingShader.setFloat("dirLight[0].k_q", k_q);
+        }
+        else if (lightNumber == 2) {
+            lightingShader.setVec3("dirLight[1].position", position);
+            lightingShader.setVec3("dirLight[1].ambient", ambientOn * ambient);
+            lightingShader.setVec3("dirLight[1].diffuse", diffuseOn * diffuse);
+            lightingShader.setVec3("dirLight[1].specular", specularOn * specular);
+            lightingShader.setFloat("dirLight[1].k_c", k_c);
+            lightingShader.setFloat("dirLight[1].k_l", k_l);
+            lightingShader.setFloat("dirLight[1].k_q", k_q);
+        }
     }
     void turnOff()
     {

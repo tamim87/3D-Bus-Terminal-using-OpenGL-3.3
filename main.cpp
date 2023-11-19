@@ -50,7 +50,7 @@ void Floor(Cube& cube, Shader& lightingShader, glm::mat4 alTogether);
 //void ladder(Cube& cube, Shader& lightingShader, glm::mat4 alTogether);
 //void Ladder(Cube& cube, Shader& lightingShader, glm::mat4 alTogether);//Main one
 
-//void bus(Cube& cube, Shader& lightingShader, glm::mat4 alTogether);
+//void bus(Cube& cube, Shader& lightingShaderTexture, glm::mat4 alTogether);
 void bus(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Cube& cube_cyl, Shader& lightingShader, Shader& lightingShaderTexture, glm::mat4 alTogether);
 void Wheel(Curve& curve_cyl, Curve& curve_circle, Shader& lightingShader, glm::mat4 alTogether);
 void Wheel_hollow(Curve& curve_cyl, Curve& curve_hollow_cyl, Cube& cube, Shader& lightingShader, Shader& lightingShaderTexture, glm::mat4 alTogether);
@@ -114,13 +114,14 @@ glm::vec3 V = glm::vec3(0.0f, 1.0f, 0.0f);
 // lights
 // positions of the point lights
 glm::vec3 LightPositions[] = {
-    glm::vec3(0.0, 20.0, 0.0), //directional light - white
+    glm::vec3(30.0, 20.0, 25.0), //directional light1 - white
     glm::vec3(-5.12181 ,4.92 ,13.1597), //spot light - red
     glm::vec3(-6.75269 ,4.92 ,2.44401), //point light1 - green
-    glm::vec3(8 ,4.92 ,-4), //point light2 - blue
-    glm::vec3(4.36687 ,4.92 ,5.62477 + 18) //point light3 - yellow
+    glm::vec3(8 ,14.0 ,-4), //point light2 - blue
+    glm::vec3(4.36687 ,14.0 ,5.62477 ), //point light3 - yellow
+    glm::vec3(-30.0, 20.0, -25.0) //directional light2 - grey
 };
-DirLight dirlight(
+DirLight dirlight1(
     LightPositions[0].x, LightPositions[0].y, LightPositions[0].z,  // position
     0.05f, 0.05f, 0.05f,     // ambient
     0.8f, 0.8f, 0.8f,     // diffuse
@@ -179,6 +180,17 @@ PointLight pointlight3(
     0.032f, //k_q
     3       // light number
 );
+DirLight dirlight2(
+    LightPositions[5].x, LightPositions[5].y, LightPositions[5].z,  // position
+    0.05f, 0.05f, 0.05f,     // ambient
+    0.8f, 0.8f, 0.8f,     // diffuse
+    1.0f, 1.0f, 1.0f,        // specular
+    //0.0f, 0.0f, 0.0f,        // emission
+    1.0f,   //k_c
+    0.09f,  //k_l
+    0.032f, //k_q
+    2       // light number
+);
 
 
 
@@ -186,7 +198,8 @@ PointLight pointlight3(
 bool pointLightOn1 = true;
 bool pointLightOn2 = true;
 bool pointLightOn3 = true;
-bool dirLightOn = true;
+bool dirLightOn1 = true;
+bool dirLightOn2 = true;
 bool spotLightOn = true;
 bool ambientToggle = true;
 bool diffuseToggle = true;
@@ -220,7 +233,6 @@ vector<float>hollow_cyllinder_vertices =
 //    -0.2550, 1.6600, 5.1000,
 //    -0.8050, 0.9150, 5.1000
 //};
-
 {
     -0.4900, 1.9100, 5.1000,
     -1.5750, 1.7800, 5.1000,
@@ -386,7 +398,7 @@ int main()
 
         // render
         // ------
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClearColor(0.435f, 0.675f, 0.949f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // be sure to activate shader when setting uniforms/drawing objects
@@ -402,16 +414,19 @@ int main()
         //glm::mat4 view = basic_camera.createViewMatrix();
         lightingShaderWithTexture.setMat4("view", view);
        
+        dirlight1.setUpPointLight(lightingShaderWithTexture);
+        spotlight.setUpPointLight(lightingShaderWithTexture);
         pointlight1.setUpPointLight(lightingShaderWithTexture);
         pointlight2.setUpPointLight(lightingShaderWithTexture);
         pointlight3.setUpPointLight(lightingShaderWithTexture);
-        dirlight.setUpPointLight(lightingShaderWithTexture);
-        spotlight.setUpPointLight(lightingShaderWithTexture);
-        //dirlight.turnOff();
+        dirlight2.setUpPointLight(lightingShaderWithTexture);
+        //dirligh1.turnOff();
         //spotlight.turnOff();
         pointlight1.turnOff();
         //pointlight2.turnOff();
         //pointlight3.turnOff();
+        //dirligh2.turnOff();
+
 
 
 
@@ -428,18 +443,20 @@ int main()
         model = translateMatrix * rotateXMatrix * rotateYMatrix * rotateZMatrix;
 
 
-        //model = transform(-1.4f, -.8f, -4.0f, 0.0f, 0.0f, 0.0f, .15f, 5.3f, .15f);
-        model = transform(0.0f, 0.0f, 15.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
-        //cube.setTextureProperty(almari_tex, almari_tex, 32.0f);
-        //bus(cube, lightingShaderWithTexture, model);
-        //bus(cube, wheel, wheel_hollow, cube, lightingShader, lightingShaderWithTexture, model);
-
         //Floor
         //translateMatrix = glm::translate(identityMatrix, glm::vec3(-25.2967, -0.9099926, 0.6557));
         translateMatrix = glm::translate(identityMatrix, glm::vec3(-30.0f,0.0f,-25.0f));
         Floor(tiles_cube, lightingShaderWithTexture, translateMatrix);
 
-            
+
+        //model = transform(0.0f, 2.69f, -15.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+        ////bus(cube, lightingShaderWithTexture, model);
+        //bus(cube, wheel, wheel_hollow, cube_cyl, lightingShader, lightingShaderWithTexture, model);
+
+
+
+
+
 
 {
 
@@ -595,16 +612,19 @@ int main()
         lightingShader.setMat4("projection", projection);
         lightingShader.setMat4("view", view);
 
+        dirlight1.setUpPointLight(lightingShader);
+        spotlight.setUpPointLight(lightingShader);
         pointlight1.setUpPointLight(lightingShader);
         pointlight2.setUpPointLight(lightingShader);
         pointlight3.setUpPointLight(lightingShader);
-        dirlight.setUpPointLight(lightingShader);
-        spotlight.setUpPointLight(lightingShader);
-        //dirlight.turnOff();
+        dirlight2.setUpPointLight(lightingShader);
+        //dirlight1.turnOff();
         //spotlight.turnOff();
         pointlight1.turnOff();
         //pointlight2.turnOff();
         //pointlight3.turnOff();
+        //dirligh2.turnOff();
+
         
 
         ////glm::mat4 modelMatrixForContainer = glm::mat4(1.0f);
@@ -612,16 +632,17 @@ int main()
         //bus(cube, lightingShader, model);
         float sx = 0.5f;
 
-        //basic wheel
-        //model = transform(0.0f, 0.0f, 5.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
-        //Wheel(wheel, wheel_lid, lightingShader, model);
+//basic wheel
+//model = transform(0.0f, 0.0f, 5.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+//Wheel(wheel, wheel_lid, lightingShader, model);
 
-        //hollow wheel
-        //model = transform(-2.0f, 0.0f, 5.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
-        //Wheel_hollow(wheel, wheel_hollow, cube,lightingShader, lightingShaderWithTexture, model);
+//hollow wheel
+//model = transform(-2.0f, 0.0f, 5.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+//Wheel_hollow(wheel, wheel_hollow, cube,lightingShader, lightingShaderWithTexture, model);
 
-        model = transform(0.0f, 2.69f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
-        bus(cube, wheel, wheel_hollow, cube_cyl , lightingShader, lightingShaderWithTexture, model);
+        model = transform(0.0f, 2.68f, -15.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+        //bus(cube, lightingShaderWithTexture, model);
+        bus(cube, wheel, wheel_hollow, cube_cyl, lightingShader, lightingShaderWithTexture, model);
 
 
 
@@ -660,10 +681,11 @@ int main()
         glm::vec3(1.0f,  0.0f,  0.0f),//Red - Spot Light
         glm::vec3(0.0f,  1.0f,  0.0f),//Green - Point Light 1
         glm::vec3(0.0f,  0.0f,  1.0f),//Blue - Point Light 2
-        glm::vec3(1.0f,  1.0f,  0.0f)//Yellow - Point Light 3
+        glm::vec3(1.0f,  1.0f,  0.0f),//Yellow - Point Light 3
+        glm::vec3(0.612f, 0.612f, 0.612f)// Grey - Dirlight2
         };
         
-        for (unsigned int i = 0; i < 5; i++)
+        for (unsigned int i = 0; i < 6 ; i++)
         {
             model = glm::mat4(1.0f);
             //LightPositions[i].y = translate_Y;
@@ -757,15 +779,15 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 {
     if (key == GLFW_KEY_1 && action == GLFW_PRESS)
     {
-        if (dirLightOn)
+        if (dirLightOn1)
         {
-            dirlight.turnOff();
-            dirLightOn = !dirLightOn;
+            dirlight1.turnOff();
+            dirLightOn1 = !dirLightOn1;
         }
         else
         {
-            dirlight.turnOn();
-            dirLightOn = !dirLightOn;
+            dirlight1.turnOn();
+            dirLightOn1 = !dirLightOn1;
         }
     }
     if (key == GLFW_KEY_2 && action == GLFW_PRESS)
@@ -815,9 +837,14 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
                 pointlight1.turnAmbientOff();
             if (pointLightOn2)
                 pointlight2.turnAmbientOff();
-            spotlight.turnAmbientOff();
-            if (dirLightOn)
-                dirlight.turnAmbientOff();
+            if (pointLightOn3)
+                pointlight3.turnAmbientOff();
+            if (spotLightOn)
+                spotlight.turnAmbientOff();
+            if (dirLightOn1)
+                dirlight1.turnAmbientOff();
+            if (dirLightOn2)
+                dirlight2.turnAmbientOff();
             ambientToggle = !ambientToggle;
         }
         else
@@ -826,10 +853,14 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
                 pointlight1.turnAmbientOn();
             if (pointLightOn2)
                 pointlight2.turnAmbientOn();
+            if (pointLightOn3)
+                pointlight3.turnAmbientOn();
             if (spotLightOn)
                 spotlight.turnAmbientOn();
-            if (dirLightOn)
-                dirlight.turnAmbientOn();
+            if (dirLightOn1)
+                dirlight1.turnAmbientOn();
+            if (dirLightOn2)
+                dirlight1.turnAmbientOn();
             ambientToggle = !ambientToggle;
         }
     }
@@ -841,8 +872,12 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
                 pointlight1.turnDiffuseOff();
             if (pointLightOn2)
                 pointlight2.turnDiffuseOff();
-            if (dirLightOn)
-                dirlight.turnDiffuseOff();
+            if (pointLightOn3)
+                pointlight3.turnDiffuseOff();
+            if (dirLightOn1)
+                dirlight1.turnDiffuseOff();
+            if (dirLightOn2)
+                dirlight2.turnDiffuseOff();
             if (spotLightOn)
                 spotlight.turnDiffuseOff();
             diffuseToggle = !diffuseToggle;
@@ -853,8 +888,12 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
                 pointlight1.turnDiffuseOn();
             if (pointLightOn2)
                 pointlight2.turnDiffuseOn();
-            if (dirLightOn)
-                dirlight.turnDiffuseOn();
+            if (pointLightOn3)
+                pointlight3.turnDiffuseOn();
+            if (dirLightOn1)
+                dirlight1.turnDiffuseOn();
+            if (dirLightOn2)
+                dirlight2.turnDiffuseOn();
             if (spotLightOn)
                 spotlight.turnDiffuseOn();
             diffuseToggle = !diffuseToggle;
@@ -868,8 +907,12 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
                 pointlight1.turnSpecularOff();
             if (pointLightOn2)
                 pointlight2.turnSpecularOff();
-            if (dirLightOn)
-                dirlight.turnSpecularOff();
+            if (pointLightOn3)
+                pointlight3.turnSpecularOff();
+            if (dirLightOn1)
+                dirlight1.turnSpecularOff();
+            if (dirLightOn2)
+                dirlight2.turnSpecularOff();
             if (spotLightOn)
                 spotlight.turnSpecularOff();
             specularToggle = !specularToggle;
@@ -880,8 +923,12 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
                 pointlight1.turnSpecularOn();
             if (pointLightOn2)
                 pointlight2.turnSpecularOn();
-            if (dirLightOn)
-                dirlight.turnSpecularOn();
+            if (pointLightOn3)
+                pointlight3.turnSpecularOn();
+            if (dirLightOn1)
+                dirlight1.turnSpecularOn();
+            if (dirLightOn2)
+                dirlight2.turnSpecularOn();
             if (spotLightOn)
                 spotlight.turnSpecularOn();
             specularToggle = !specularToggle;
@@ -898,6 +945,19 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
         {
             pointlight3.turnOn();
             pointLightOn3 = !pointLightOn3;
+        }
+    }
+    if (key == GLFW_KEY_9 && action == GLFW_PRESS)
+    {
+        if (dirLightOn2)
+        {
+            dirlight2.turnOff();
+            dirLightOn2 = !dirLightOn2;
+        }
+        else
+        {
+            dirlight2.turnOn();
+            dirLightOn2 = !dirLightOn2;
         }
     }
 
@@ -1036,6 +1096,7 @@ void Wheel_hollow(Curve& curve_cyl, Curve& curve_hollow_cyl, Cube& cube_cyl, Sha
 
 }
 
+//void bus(Cube& cube, Shader& lightingShaderTexture, glm::mat4 alTogether)
 void bus(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Cube& cube_cyl, Shader& lightingShader, Shader& lightingShaderTexture, glm::mat4 alTogether)
 {
     //glm::mat4 identityMatrix = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
@@ -1211,6 +1272,13 @@ void bus(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Cube& cube_cyl, 
     cube.drawCubeWithTexture(lightingShaderTexture, alTogether* model);
 
 
+    //test cube
+    model = transform(p1 + p2 + 4.2, panel_y / 2.3 + floor_y, 0.0f + floor_z + .1 + 1, 0.0f, 0.0f, 0.0f, front_z - 1.8, front_y / 2, front_x - .05);
+    //cube.setTextureProperty(black_tex, black_tex, 32.0f);
+    //cube.drawCubeWithTexture(lightingShaderTexture, alTogether* model);
+    cube.setMaterialisticProperty(glm::vec3(1.0f, 0.0f, 0.0f));
+    cube.drawCubeWithMaterialisticProperty(lightingShader, alTogether * model);
+
     
 
     float w_x = 3.6f;
@@ -1223,21 +1291,21 @@ void bus(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Cube& cube_cyl, 
 
 
 
-    //front wheel1
-    model = transform(w_x, w_y, w_z, 90.0f, 0.0f, 0.0f, w_sx, w_sy, w_sz);
-    Wheel_hollow(curve_cyl, curve_hollow_cyl, cube_cyl, lightingShader, lightingShaderTexture, alTogether* model);
+    ////front wheel1
+    //model = transform(w_x, w_y, w_z, 90.0f, 0.0f, 0.0f, w_sx, w_sy, w_sz);
+    //Wheel_hollow(curve_cyl, curve_hollow_cyl, cube_cyl, lightingShader, lightingShaderTexture, alTogether* model);
 
-    //front wheel2
-    model = transform(w_x + 8.2f, w_y, w_z, 90.0f, 0.0f, 0.0f, w_sx, w_sy, w_sz);
-    Wheel_hollow(curve_cyl, curve_hollow_cyl, cube_cyl, lightingShader, lightingShaderTexture, alTogether* model);
+    ////front wheel2
+    //model = transform(w_x + 8.2f, w_y, w_z, 90.0f, 0.0f, 0.0f, w_sx, w_sy, w_sz);
+    //Wheel_hollow(curve_cyl, curve_hollow_cyl, cube_cyl, lightingShader, lightingShaderTexture, alTogether* model);
 
-    //back wheel1
-    model = transform(w_x, w_y, w_z-floor_z+0.8, 90.0f, 0.0f, 0.0f, w_sx, w_sy, w_sz);
-    Wheel_hollow(curve_cyl, curve_hollow_cyl, cube_cyl, lightingShader, lightingShaderTexture, alTogether* model);
+    ////back wheel1
+    //model = transform(w_x, w_y, w_z-floor_z+0.8, 90.0f, 0.0f, 0.0f, w_sx, w_sy, w_sz);
+    //Wheel_hollow(curve_cyl, curve_hollow_cyl, cube_cyl, lightingShader, lightingShaderTexture, alTogether* model);
 
-    //back wheel2
-    model = transform(w_x + 8.2f, w_y, w_z-floor_z+0.8, 90.0f, 0.0f, 0.0f, w_sx, w_sy, w_sz);
-    Wheel_hollow(curve_cyl, curve_hollow_cyl, cube_cyl, lightingShader, lightingShaderTexture, alTogether* model);
+    ////back wheel2
+    //model = transform(w_x + 8.2f, w_y, w_z-floor_z+0.8, 90.0f, 0.0f, 0.0f, w_sx, w_sy, w_sz);
+    //Wheel_hollow(curve_cyl, curve_hollow_cyl, cube_cyl, lightingShader, lightingShaderTexture, alTogether* model);
 
 
 
