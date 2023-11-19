@@ -56,6 +56,7 @@ void Wheel(Curve& curve_cyl, Curve& curve_circle, Shader& lightingShader, glm::m
 void Wheel_hollow(Curve& curve_cyl, Curve& curve_hollow_cyl, Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
 void terminal(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
 void lobby(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
+void seat(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
 
 
 glm::mat4 transform(float tr_x, float tr_y, float tr_z, float rot_x, float rot_y, float rot_z, float scal_x, float scal_y, float scal_z) {
@@ -99,8 +100,6 @@ unsigned int bus_side_right_tex;
 unsigned int bus_side_left_tex;
 unsigned int bus_front_tex;
 unsigned int bus_back_tex;
-
-float door_angle = 0.0f;
 
 
 Camera camera(glm::vec3(0.0f, 3.1f, 13.0f));
@@ -206,6 +205,11 @@ bool ambientToggle = true;
 bool diffuseToggle = true;
 bool specularToggle = true;
 bool emissionToggle = true;
+
+bool lobby_door_fl = true;
+float lobby_door_tx = 1.0f;
+float bus_door_angle = 0.0f;
+
 
 // timing
 float deltaTime = 0.0f;    // time between current frame and last frame
@@ -367,7 +371,7 @@ int main()
 
     Cube cube = Cube(walls_tex, walls_tex, 32.0f, 0.0f, 0.0f, 1.0f, 1.0f);
     demo = &cube;
-    Cube tiles_cube = Cube(floor_tiles_tex, floor_tiles_tex, 32.0, 0.0f, 0.0f, 20.0f, 20.0f);
+    Cube tiles_cube = Cube(floor_tiles_tex, floor_tiles_tex, 92.0f, 0.0f, 0.0f, 20.0f, 20.0f);
     Cube cube_cyl = Cube(cushion_tex, cushion_tex, 32.0, 0.0f, 0.0f, 1.0f, 1.0f);
 
     //Sphere sphere = Sphere();
@@ -378,7 +382,6 @@ int main()
     /*Curve wheel(wheel_vertices);*/
     //Curve wheel_hollow(hollow_cyllinder_vertices);
 
-    //wheel_pointer = &wheel;
     //Curve wheel_lid(wheel_lid_vertices);
     //wheel_lid_pointer = &wheel_lid;
     
@@ -650,13 +653,18 @@ int main()
         //bus(cube, lightingShaderWithTexture, model);
         bus(cube, wheel, wheel_hollow, cube_cyl, lightingShader, lightingShaderWithTexture, model);
 
-        model = transform(0.0f, 0.0f, -10.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+        model = transform(0.0f, 0.0f, -30.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
         terminal(cube, lightingShader, lightingShaderWithTexture, model);
 
-        model = transform(-20.0f, 0.0f, -10.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+        model = transform(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
         lobby(cube, lightingShader, lightingShaderWithTexture, model);
 
+        //model = transform(0.0f, 5.0f, -5.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+        //seat(cube, lightingShader, lightingShaderWithTexture, model);
 
+
+
+        //`
 
 
 {
@@ -976,11 +984,20 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
     if (key == GLFW_KEY_O && action == GLFW_PRESS)
     {
-        if (door_angle)
-            door_angle = 0.0f;
+        if (bus_door_angle)
+            bus_door_angle = 0.0f;
         else
-            door_angle = 90.0f;
+            bus_door_angle = 90.0f;
     }
+    if (key == GLFW_KEY_L && action == GLFW_PRESS)
+    {
+        if (lobby_door_fl && lobby_door_tx < 6.0)
+            lobby_door_tx+= 0.3f;
+        else if(!lobby_door_fl && lobby_door_tx > 0.0)
+            lobby_door_tx-=.3f;
+        lobby_door_fl = !lobby_door_fl;
+    }
+
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
@@ -1112,15 +1129,177 @@ void Wheel_hollow(Curve& curve_cyl, Curve& curve_hollow_cyl, Cube& cube_cyl, Sha
 void lobby(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether)
 {
     glm::mat4 model;
+
+    float p1 = 1.0f;
+    float p2 = 2.5f;
+    float p3 = 8.0f;
+    float p4 = 2.5f;
+    float p5 = 1.0f;
+    float panel_y = 5.0f;
+    float panel_z = 0.35f;
+
+    float floor_x = p1 + p2 + p3 + p4 + p5;
+    float floor_y = 0.35f;
+    float floor_z = 5.0f;
+
+    float front_x = 0.35f;
+    float front_y = floor_y + 5.0f;
+    float front_z = 5.0f;
+
+
     ////surface
     //model = transform(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, p1 + p2 + p3 + p4 + p5, floor_y, floor_z + panel_z);
     //cube.setTextureProperty(black_tex, black_tex, 32.0f);
     //cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
 
-    //surface
-    model = transform(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, p1 + p2 + p3 + p4 + p5, floor_y, floor_z + panel_z);
+    //surface l1
+    model = transform(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 20.0f, .35f, 20.0f);
     cube.setTextureProperty(black_tex, black_tex, 32.0f);
     cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+    
+    //surface l2
+    model = transform(0.0f, 8.0f, 0.0f, 0.0f, 0.0f, 0.0f, 20.0f, .35f, 20.0f);
+    cube.setTextureProperty(black_tex, black_tex, 32.0f);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+
+    //chairs
+    float t = 20;
+    float startx = -4;
+    for (int i = 0; i < 4; i++)
+    {
+        model = transform(startx + t, 1.5f, 4.0f, 0.0f, 0.0f, 0.0f, .6f, .6f, .6f);
+        seat(cube, lightingShader, lightingShaderWithTexture, model);
+        t -= 2.5;
+    }
+    t = 20;
+    for (int i = 0; i < 4; i++)
+    {
+        model = transform(startx + t, 1.5f, 7.5f, 0.0f, 0.0f, 0.0f, .6f, .6f, .6f);
+        seat(cube, lightingShader, lightingShaderWithTexture, model);
+        t -= 2.55;
+    }
+    t = 20;
+    for (int i = 0; i < 4; i++)
+    {
+        model = transform(startx + t, 1.5f, 11.0f, 0.0f, 0.0f, 0.0f, .6f, .6f, .6f);
+        seat(cube, lightingShader, lightingShaderWithTexture, model);
+        t -= 2.55;
+    }
+    t = 20;
+    for (int i = 0; i < 4; i++)
+    {
+        model = transform(startx + t, 1.5f, 14.5f, 0.0f, 0.0f, 0.0f, .6f, .6f, .6f);
+        seat(cube, lightingShader, lightingShaderWithTexture, model);
+        t -= 2.55;
+    }
+
+
+    //fence l1 back
+    float f = 1;
+    for (int i = 0; i < 19; i++)
+    {
+        //rail l1
+        model = transform(0.0f + (f), .35, 0.0f, 0.0f, 0.0f, 0.0f, 0.35f, 8 - .35, 1.0f);
+        cube.setTextureProperty(cushion_tex, cushion_tex, 32.0f);
+        cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+        f += 1;
+    }
+    //fence l1 front half
+    f = 1;
+    for (int i = 0; i < 13; i++)
+    {
+        //rail l1
+        model = transform(6.0f + (f), .35, 19.0f, 0.0f, 0.0f, 0.0f, 0.35f, 8 - .35, 1.0f);
+        cube.setTextureProperty(cushion_tex, cushion_tex, 32.0f);
+        cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+        f += 1;
+    }
+
+    //fence l1 right
+    f = 0;
+    for (int i = 0; i < 19; i++)
+    {
+        //rail l1
+        model = transform(20-1, .35, 1.0f + (f), 0.0f, 0.0f, 0.0f, 1.0f, 8 - .35, 0.35f);
+        cube.setTextureProperty(cushion_tex, cushion_tex, 32.0f);
+        cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+        f += 1;
+    }
+
+    //fence l1 left
+    f = 0;
+    for (int i = 0; i < 19; i++)
+    {
+        //rail l1
+        model = transform(.0, .35, 1.0f + (f), 0.0f, 0.0f, 0.0f, 1.0f, 8 - .35, 0.35f);
+        cube.setTextureProperty(cushion_tex, cushion_tex, 32.0f);
+        cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+        f += 1;
+    }
+
+    //lobby door
+    model = transform(1+ lobby_door_tx, .35, 19.35, 0.0f, 0.0f, 0.0f, 6, 8 - .35, 0.35f);
+    cube.setTextureProperty(black_tex, black_tex, 32.0f);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+
+
+
+    //t = 20;
+    //for (int i = 0; i < 4; i++)
+    //{
+    //    model = transform(-4.0f + t, 1.5f, 9.0f, 0.0f, 0.0f, 0.0f, .5f, .5f, .5f);
+    //    seat(cube, lightingShader, lightingShaderWithTexture, model);
+    //    t -= 2.2;
+    //}
+    //t = 20;
+    //for (int i = 0; i < 4; i++)
+    //{
+    //    model = transform(-4.0f + t, 1.5f, 12.0f, 0.0f, 0.0f, 0.0f, .5f, .5f, .5f);
+    //    seat(cube, lightingShader, lightingShaderWithTexture, model);
+    //    t -= 2.2;
+    //}
+
+
+}
+
+void seat(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether)
+{
+    glm::mat4 model;
+
+    //chair base
+    model = transform(0.0f, 0.0f, 0.0f, 00.0f, 0.0f, 0.0f, 3.0f, .5f, 2.50f);
+    cube.setTextureProperty(black_tex, black_tex, 32.0f);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+    //chair back
+    model = transform(0.0f, 0.0f, 0.0f, -15.0f, 0.0f, 0.0f, 3.0f, 3.250f, 0.5f);
+    cube.setTextureProperty(black_tex, black_tex, 32.0f);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+    //chair left
+    model = transform(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 15.0f, 0.5f, 2.250f, 2.4f);
+    cube.setTextureProperty(black_tex, black_tex, 32.0f);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+    //chair right
+    model = transform(2.5f, 0.2f, 0.0f, 0.0f, 0.0f, -15.0f, 0.5f, 2.250-.1, 2.4f);
+    cube.setTextureProperty(black_tex, black_tex, 32.0f);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+
+    //leg1
+    model = transform(0.0f, -2.0f, 0.0f, 0.0f, 0.0f, 0.0f, .35f, 2.0f, .35);
+    cube.setTextureProperty(black_tex, black_tex, 32.0f);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+    //leg2
+    model = transform(2.65f, -2.0f, 0.0f, 0.0f, 0.0f, 0.0f, .35f, 2.0f, .35f);
+    cube.setTextureProperty(black_tex, black_tex, 32.0f);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+    //leg3
+    model = transform(0.0f, -2.0f, 2.15f, 0.0f, 0.0f, 0.0f, .35, 2.0f, .35);
+    cube.setTextureProperty(black_tex, black_tex, 32.0f);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+    //leg4
+    model = transform(2.65f, -2.0f, 2.15f, 0.0f, 0.0f, 0.0f, .35, 2.0f, .35);
+    cube.setTextureProperty(black_tex, black_tex, 32.0f);
+    cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
+
 
 
 }
@@ -1384,7 +1563,7 @@ void bus(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Cube& cube_cyl, 
     cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
 
     //front door
-    model = transform(p1, 0.0f + floor_y, 0.0f, 0.0f, 0.0f + door_angle, 0.0f, p2, panel_y, panel_z);
+    model = transform(p1, 0.0f + floor_y, 0.0f, 0.0f, 0.0f + bus_door_angle, 0.0f, p2, panel_y, panel_z);
     cube.setTextureProperty(ch_wood_tex, ch_wood_tex, 32.0f);
     cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
 
@@ -1394,7 +1573,7 @@ void bus(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Cube& cube_cyl, 
     cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
 
     //back door
-    model = transform(p1 + p2 + p3, 0.0f + floor_y, 0.0f, 0.0f, 0.0f + door_angle, 0.0f, p4, panel_y, panel_z);
+    model = transform(p1 + p2 + p3, 0.0f + floor_y, 0.0f, 0.0f, 0.0f + bus_door_angle, 0.0f, p4, panel_y, panel_z);
     cube.setTextureProperty(ch_wood_tex, ch_wood_tex, 32.0f);
     cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
 
@@ -1424,7 +1603,7 @@ void bus(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Cube& cube_cyl, 
     cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
     //
         //front door
-    model = transform(p1, 0.0f + floor_y, 0.0f + floor_z, 0.0f, 0.0f - door_angle, 0.0f, p2, panel_y, panel_z);
+    model = transform(p1, 0.0f + floor_y, 0.0f + floor_z, 0.0f, 0.0f - bus_door_angle, 0.0f, p2, panel_y, panel_z);
     cube.setTextureProperty(ch_wood_tex, ch_wood_tex, 32.0f);
     cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
     //
@@ -1434,7 +1613,7 @@ void bus(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Cube& cube_cyl, 
     cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
     //
         //back door
-    model = transform(p1 + p2 + p3, 0.0f + floor_y, 0.0f + floor_z, 0.0f, 0.0f - door_angle, 0.0f, p4, panel_y, panel_z);
+    model = transform(p1 + p2 + p3, 0.0f + floor_y, 0.0f + floor_z, 0.0f, 0.0f - bus_door_angle, 0.0f, p4, panel_y, panel_z);
     cube.setTextureProperty(ch_wood_tex, ch_wood_tex, 32.0f);
     cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
     //
