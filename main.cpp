@@ -206,10 +206,10 @@ bool diffuseToggle = true;
 bool specularToggle = true;
 bool emissionToggle = true;
 
-bool lobby_door_fl = true;
+bool lobby_door_fl = false;
 float lobby_door_tx = 1.0f;
+bool bus_door_fl = false;
 float bus_door_angle = 0.0f;
-
 
 // timing
 float deltaTime = 0.0f;    // time between current frame and last frame
@@ -653,10 +653,19 @@ int main()
         //bus(cube, lightingShaderWithTexture, model);
         bus(cube, wheel, wheel_hollow, cube_cyl, lightingShader, lightingShaderWithTexture, model);
 
+        model = transform(0.0f, 1.15f, 0.0f, 0.0f, 90.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+        //bus(cube, lightingShaderWithTexture, model);
+        bus(cube, wheel, wheel_hollow, cube_cyl, lightingShader, lightingShaderWithTexture, model);
+
+        model = transform(15.0f, 1.15f, 0.0f, 0.0f, -90.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+        //bus(cube, lightingShaderWithTexture, model);
+        bus(cube, wheel, wheel_hollow, cube_cyl, lightingShader, lightingShaderWithTexture, model);
+
+
         model = transform(0.0f, 0.0f, -30.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
         terminal(cube, lightingShader, lightingShaderWithTexture, model);
 
-        model = transform(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+        model = transform(-25.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
         lobby(cube, lightingShader, lightingShaderWithTexture, model);
 
         //model = transform(0.0f, 5.0f, -5.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
@@ -984,17 +993,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
     if (key == GLFW_KEY_O && action == GLFW_PRESS)
     {
-        if (bus_door_angle)
-            bus_door_angle = 0.0f;
-        else
-            bus_door_angle = 90.0f;
+        bus_door_fl = !bus_door_fl;
     }
     if (key == GLFW_KEY_L && action == GLFW_PRESS)
-    {
-        if (lobby_door_fl && lobby_door_tx < 6.0)
-            lobby_door_tx+= 0.3f;
-        else if(!lobby_door_fl && lobby_door_tx > 0.0)
-            lobby_door_tx-=.3f;
+    {  
         lobby_door_fl = !lobby_door_fl;
     }
 
@@ -1168,28 +1170,28 @@ void lobby(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture
     for (int i = 0; i < 4; i++)
     {
         model = transform(startx + t, 1.5f, 4.0f, 0.0f, 0.0f, 0.0f, .6f, .6f, .6f);
-        seat(cube, lightingShader, lightingShaderWithTexture, model);
+        seat(cube, lightingShader, lightingShaderWithTexture, alTogether * model);
         t -= 2.5;
     }
     t = 20;
     for (int i = 0; i < 4; i++)
     {
         model = transform(startx + t, 1.5f, 7.5f, 0.0f, 0.0f, 0.0f, .6f, .6f, .6f);
-        seat(cube, lightingShader, lightingShaderWithTexture, model);
+        seat(cube, lightingShader, lightingShaderWithTexture, alTogether * model);
         t -= 2.55;
     }
     t = 20;
     for (int i = 0; i < 4; i++)
     {
         model = transform(startx + t, 1.5f, 11.0f, 0.0f, 0.0f, 0.0f, .6f, .6f, .6f);
-        seat(cube, lightingShader, lightingShaderWithTexture, model);
+        seat(cube, lightingShader, lightingShaderWithTexture, alTogether * model);
         t -= 2.55;
     }
     t = 20;
     for (int i = 0; i < 4; i++)
     {
         model = transform(startx + t, 1.5f, 14.5f, 0.0f, 0.0f, 0.0f, .6f, .6f, .6f);
-        seat(cube, lightingShader, lightingShaderWithTexture, model);
+        seat(cube, lightingShader, lightingShaderWithTexture, alTogether * model);
         t -= 2.55;
     }
 
@@ -1238,7 +1240,16 @@ void lobby(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture
     }
 
     //lobby door
-    model = transform(1+ lobby_door_tx, .35, 19.35, 0.0f, 0.0f, 0.0f, 6, 8 - .35, 0.35f);
+    
+    if (lobby_door_fl &&  lobby_door_tx < 5.9)
+    {
+        lobby_door_tx += 0.02f;
+    }
+    if (!lobby_door_fl && lobby_door_tx > 0.0)
+    {
+        lobby_door_tx -= 0.02f;
+    }
+    model = transform(1 + lobby_door_tx, .35, 19.35, 0.0f, 0.0f, 0.0f, 6, 8 - .35, 0.35f);
     cube.setTextureProperty(black_tex, black_tex, 32.0f);
     cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
 
@@ -1558,6 +1569,14 @@ void bus(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Cube& cube_cyl, 
 
     //bus back side(right side)
         //first part
+    if (bus_door_fl && bus_door_angle < 90)
+    {
+        bus_door_angle += .4f;
+    }
+    if (!bus_door_fl && bus_door_angle > 0.0)
+    {
+        bus_door_angle -= .4f;
+    }
     model = transform(0.0f, 0.0f + floor_y, 0.0f, 0.0f, 0.0f, 0.0f, p1, panel_y, panel_z);
     cube.setTextureProperty(almari_tex, almari_tex, 32.0f);
     cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
