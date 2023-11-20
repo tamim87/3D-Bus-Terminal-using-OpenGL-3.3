@@ -59,6 +59,8 @@ void lobby(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture
 void seat(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
 void windmill_blades(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
 void windmill_body(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
+void road(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
+void make_tree(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Curve& tree, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
 
 
 
@@ -103,6 +105,10 @@ unsigned int bus_side_right_tex;
 unsigned int bus_side_left_tex;
 unsigned int bus_front_tex;
 unsigned int bus_back_tex;
+unsigned int road_tex;
+unsigned int stone_tex;
+unsigned int sq_tile_tex;
+//unsigned int road_tex;
 
 
 Camera camera(glm::vec3(0.0f, 3.1f, 13.0f));
@@ -214,6 +220,11 @@ float lobby_door_tx = 1.0f;
 bool bus_door_fl = false;
 float bus_door_angle = 0.0f;
 float wdz = 0;
+bool bus_move_fl1 = false;
+bool bus_move_fl2 = false;
+float bus_move_tx1 = 1.0f;
+float bus_move_tx2 = 1.0f;
+
 
 // timing
 float deltaTime = 0.0f;    // time between current frame and last frame
@@ -350,7 +361,7 @@ int main()
 
     string diffuseMapPath = "container2.png";
     string specularMapPath = "container2_specular.png";
-    string f_tiles = "floor_tiles.jpg";
+    string f_tiles = "stone_ground.jpg";
     string wood = "wood.png";
     string woods = "woods.jpg";
     string sofa = "sofa.jpg";
@@ -371,6 +382,9 @@ int main()
     string  bus_side_left = "bus-side-black-left.jpg";
     string      bus_front = "bus-side-black-front.jpg";
     string       bus_back = "bus-side-black-back.jpg";
+    string         road_o = "road.jpg";
+    string         stone  = "stone_ground.jpg";
+    string        sq_tile = "sq_tile.jpg";
 
 
     //bus_side_right_tex = loadTexture(bus_side_right.c_str(), GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
@@ -400,6 +414,10 @@ int main()
     cushion_tex = loadTexture(cushion.c_str(), GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
     black_tex = loadTexture(black.c_str(), GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
     //unsigned int door_tex = loadTexture(door.c_str(), GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
+    road_tex = loadTexture(road_o.c_str(), GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
+    stone_tex = loadTexture(stone.c_str(), GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
+    sq_tile_tex = loadTexture(sq_tile.c_str(), GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
+    
 
 
 
@@ -408,6 +426,10 @@ int main()
     demo = &cube;
     Cube tiles_cube = Cube(floor_tiles_tex, floor_tiles_tex, 92.0f, 0.0f, 0.0f, 20.0f, 20.0f);
     Cube cube_cyl = Cube(cushion_tex, cushion_tex, 32.0, 0.0f, 0.0f, 1.0f, 1.0f);
+    Cube stone_cube = Cube(stone_tex, stone_tex, 92.0f, 0.0f, 0.0f, 3.0f, 3.0f);
+    Cube sq_tile_cube= Cube(sq_tile_tex, sq_tile_tex, 92.0f, 0.0f, 0.0f, 8.0f, 8.0f);
+
+
 
     //Sphere sphere = Sphere();
 
@@ -422,7 +444,7 @@ int main()
     
     Curve wheel(wheel_vertices, black_tex,black_tex, 1.0f);
     Curve wheel_hollow(hollow_cyllinder_vertices, black_tex, black_tex, 1.0f);
-
+    Curve tree(tree_vertices, sq_tile_tex, sq_tile_tex, 1.0f);
 
     
     // render loop
@@ -489,7 +511,7 @@ int main()
         //Floor
         //translateMatrix = glm::translate(identityMatrix, glm::vec3(-25.2967, -0.9099926, 0.6557));
         translateMatrix = glm::translate(identityMatrix, glm::vec3(-30.0f,0.0f,-30.0f));
-        Floor(tiles_cube, lightingShaderWithTexture, translateMatrix);
+        Floor(sq_tile_cube, lightingShaderWithTexture, translateMatrix);
 
 
         //model = transform(0.0f, 2.69f, -15.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
@@ -684,19 +706,43 @@ int main()
 //Wheel_hollow(wheel, wheel_hollow, cube,lightingShader, lightingShaderWithTexture, model);
 
         
-        model = transform(-27.0f, 1.15f, 10.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+        
+        if (!bus_move_fl1 && bus_move_tx1 < 13)
+        {
+            bus_move_tx1 += .08;
+        }
+        if (bus_move_fl1 && bus_move_tx1 > -28)
+        {
+            bus_move_tx1 -= .08;
+        }
+        model = transform(0.0f + bus_move_tx1, 1.15f, 13.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
         ////bus(cube, lightingShaderWithTexture, model);
         //lightingShaderWithTexture.setMat4("view", view*model);
         //lightingShader.setMat4("view", view*model);
         bus(cube, wheel, wheel_hollow, cube_cyl, lightingShader, lightingShaderWithTexture, model);
-        
+
+        if (bus_move_fl2 && bus_move_tx2 < 13)
+        {
+            bus_move_tx2 += .08;
+        }
+        if (!bus_move_fl2 && bus_move_tx2 > -28)
+        {
+            bus_move_tx2 -= .08;
+        }
+        model = transform(14.0f + bus_move_tx2, 1.15f, 25.3f, 0.0f, 180.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+        bus(cube, wheel, wheel_hollow, cube_cyl, lightingShader, lightingShaderWithTexture, model);
+
+
+
+        //static bus 1
         model = transform(0.0f, 1.15f, 0.0f, 0.0f, 90.0f, 0.0f, 1.0f, 1.0f, 1.0f);
         //bus(cube, lightingShaderWithTexture, model);
         bus(cube, wheel, wheel_hollow, cube_cyl, lightingShader, lightingShaderWithTexture, model);
-        
+        //static bus 2
         model = transform(15.0f, 1.15f, -5.0f, 0.0f, -90.0f, 0.0f, 1.0f, 1.0f, 1.0f);
         //bus(cube, lightingShaderWithTexture, model);
         bus(cube, wheel, wheel_hollow, cube_cyl, lightingShader, lightingShaderWithTexture, model);
+
 
 
         model = transform(0.0f, 0.0f, -29.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
@@ -704,7 +750,7 @@ int main()
 
 
 
-        model = transform(-28.0f, 0.0f, -22.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+        model = transform(-28.0f, 0.0f, -25.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
         //lightingShaderWithTexture.setMat4("view", view* transform(+28.0f, 0.0f, +22.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f));
         //lightingShader.setMat4("view", view* transform(+28.0f, 0.0f, +22.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f));
         lobby(cube, lightingShader, lightingShaderWithTexture, model);
@@ -735,8 +781,19 @@ int main()
             //wdz += .25;
         //}
 
-        model = transform(-23.0f, 1.15 - 1.15, -28.0f, 0.0f, 0.0f, 0.0f, 1, 1.0f, 1.0f);
+        model = transform(-23.0f, 1.15 - 1.15, 02.0f, 0.0f, 0.0f, 0.0f, 1, 1.0f, 1.0f);
         windmill_body(cube,wheel, wheel_hollow, lightingShader, lightingShaderWithTexture, model);
+
+
+        model = transform(-30.0f, 0.0f, 12.0f, 0.0f, 0.0f, 0.0f, 60.0f, 1, 1);
+        cube.setTextureProperty(black_tex, black_tex, 32.0f);
+        road(cube, lightingShader, lightingShaderWithTexture, model);
+
+        model = transform(-23.0f, 1.15 - 1.15, 02.0f, 0.0f, 0.0f, 0.0f, 1, 1.0f, 1.0f);
+        make_tree(cube, wheel, wheel_hollow, tree, lightingShader, lightingShaderWithTexture, model);
+
+
+
 
 
         //`
@@ -1062,10 +1119,17 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
         bus_door_fl = !bus_door_fl;
     }
     if (key == GLFW_KEY_L && action == GLFW_PRESS)
-    {  
+    {
         lobby_door_fl = !lobby_door_fl;
     }
-
+    if (key == GLFW_KEY_M && action == GLFW_PRESS)
+    {
+        bus_move_fl1 = !bus_move_fl1;
+    }
+    if (key == GLFW_KEY_N && action == GLFW_PRESS)
+    {
+        bus_move_fl2 = !bus_move_fl2;
+    }
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
@@ -1194,13 +1258,23 @@ void Wheel_hollow(Curve& curve_cyl, Curve& curve_hollow_cyl, Cube& cube_cyl, Sha
 
 }
 
+void make_tree(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Curve& tree, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether)
+{
+    glm::mat4 model;
+
+    //cyllinder
+    model = transform(0, 0, 0, 0, 0, 0, 1, 1, 1);
+    curve_cyl.draw(lightingShaderWithTexture, alTogether * model, glm::vec3(0.0f, 0.0f, 0.0f));
+
+}
+
 void road(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether)
 {
     glm::mat4 model;
 
     //road strip1
-    model = transform(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 20.0f, .35f, 10.0f);
-    cube.setTextureProperty(black_tex, black_tex, 32.0f);
+    model = transform(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, .05f, 15.0f);
+    cube.setTextureProperty(road_tex, road_tex, 32.0f);
     cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
 }
 
