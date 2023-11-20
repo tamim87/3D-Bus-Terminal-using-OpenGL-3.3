@@ -60,6 +60,7 @@ void seat(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture,
 void windmill_blades(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
 void windmill_body(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
 void road(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
+void make_boat(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Curve& tree, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
 void make_tree(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Curve& tree, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
 
 
@@ -444,6 +445,7 @@ int main()
     
     Curve wheel(wheel_vertices, black_tex,black_tex, 1.0f);
     Curve wheel_hollow(hollow_cyllinder_vertices, black_tex, black_tex, 1.0f);
+    Curve boat(tree_vertices, ch_wood_tex, ch_wood_tex, 1.0f);
     Curve tree(tree_vertices, sq_tile_tex, sq_tile_tex, 1.0f);
 
     
@@ -789,8 +791,14 @@ int main()
         cube.setTextureProperty(black_tex, black_tex, 32.0f);
         road(cube, lightingShader, lightingShaderWithTexture, model);
 
-        model = transform(-23.0f, 1.15 - 1.15, 02.0f, 0.0f, 0.0f, 0.0f, 1, 1.0f, 1.0f);
-        make_tree(cube, wheel, wheel_hollow, tree, lightingShader, lightingShaderWithTexture, model);
+        
+
+        model = transform(10.0f, 1.15 + 10, 02.0f, 0.0f, 0.0f, 0.0f, 1, 1.0f, 1.0f);
+        make_boat(cube, wheel, wheel_hollow, boat, lightingShader, lightingShaderWithTexture, model);
+
+
+        //model = transform(10.0f, 1.15 +10, 02.0f, 0.0f, 0.0f, 0.0f, 1, 1.0f, 1.0f);
+        //make_tree(cube, wheel, wheel_hollow, tree, lightingShader, lightingShaderWithTexture, model);
 
 
 
@@ -1262,11 +1270,26 @@ void make_tree(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Curve& tre
 {
     glm::mat4 model;
 
-    //cyllinder
-    model = transform(0, 0, 0, 0, 0, 0, 1, 1, 1);
-    curve_cyl.draw(lightingShaderWithTexture, alTogether * model, glm::vec3(0.0f, 0.0f, 0.0f));
+    //tree
+    model = transform(0, 0, 0, 180, 0, 0, 7, 2, 1.5);
+    tree.draw(lightingShaderWithTexture, alTogether * model, glm::vec3(0.0f, 0.0f, 0.0f));
 
 }
+
+void make_boat(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Curve& tree, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether)
+{
+    glm::mat4 model;
+
+    //boat
+    model = transform(0, 0, 0, 180, 0, 0, 6, 1.5, 2.5);
+    tree.draw(lightingShaderWithTexture, alTogether * model, glm::vec3(0.0f, 0.0f, 0.0f));
+
+    //model = transform(0, 0, 0, 180, 0, 0, 12, 1.5, 3.5);
+    //curve_cyl.draw(lightingShaderWithTexture, alTogether * model, glm::vec3(0.0f, 0.0f, 0.0f));
+
+
+}
+
 
 void road(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether)
 {
