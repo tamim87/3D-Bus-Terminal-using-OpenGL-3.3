@@ -1,10 +1,3 @@
-//
-//  main.cpp
-//  3D Object Drawing
-//
-//  Created by Nazirul Hasan on 4/9/23.
-//
-
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -63,6 +56,7 @@ void windmill_body(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Shader
 void road(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
 void make_boat(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Curve& tree, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
 void make_tree(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Curve& tree, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
+void make_tree2(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Curve& tree, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
 void sun_rotate(Sphere2& sphere, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
 
 
@@ -114,6 +108,8 @@ unsigned int stone_tex;
 unsigned int sq_tile_tex;
 //unsigned int road_tex;
 unsigned int sun_tex;
+unsigned int leaf_tex;
+
 
 
 
@@ -278,6 +274,17 @@ vector<float>share_tree_vertices = {
     -0.1250, -0.2200, 5.1000,
 };
 
+vector<float>tree2_vertices =
+{
+    0.0250, 1.6600, 5.1000,
+    -0.7250, 1.3900, 5.1000,
+    -0.2450, 1.3550, 5.1000,
+    -0.8500, 1.2300, 5.1000,
+    -0.2850, 1.2100, 5.1000,
+    -0.8650, 0.7700, 5.1000,
+    -0.3250, 0.8300, 5.1000
+};
+
 vector<float>apple_shape_vertices =
 {
     -0.7250, 2.0650, 5.1000,
@@ -390,6 +397,8 @@ int main()
     string         stone  = "stone_ground.jpg";
     string        sq_tile = "sq_tile.jpg";
     string        sunP = "sun.png";
+    string        leaf = "leaf.jpg";
+
 
 
 
@@ -424,6 +433,7 @@ int main()
     stone_tex = loadTexture(stone.c_str(), GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
     sq_tile_tex = loadTexture(sq_tile.c_str(), GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
     sun_tex = loadTexture(sunP.c_str(), GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
+    leaf_tex= loadTexture(leaf.c_str(), GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
 
 
 
@@ -454,7 +464,8 @@ int main()
     Curve wheel(wheel_vertices, black_tex,black_tex, 1.0f);
     Curve wheel_hollow(hollow_cyllinder_vertices, black_tex, black_tex, 1.0f);
     Curve boat(tree_vertices, ch_wood_tex, ch_wood_tex, 1.0f);
-    Curve tree(tree_vertices, sq_tile_tex, sq_tile_tex, 1.0f);
+    Curve tree(mushroom_shape_vertices, sq_tile_tex, sq_tile_tex, 1.0f);
+    Curve tree2(tree2_vertices, black_tex, black_tex, 1.0f);
 
     
     // render loop
@@ -773,23 +784,6 @@ int main()
 ////bus(cube, lightingShaderWithTexture, model);
 //bus(cube, wheel, wheel_hollow, cube_cyl, lightingShader, lightingShaderWithTexture, model);
 
-        
-        //for (int i = 0; i < 4; i++)
-        //{
-            ////windmill blades 
-            //model = transform(0.0f, 1.15 + 8, 0.0f, 0.0f, 0.0f, 0.0f + wdz, .25, 1.0f, 1.0f);
-            //windmill_blades(cube, lightingShader, lightingShaderWithTexture, model);            
-            ////windmill blades 
-            //model = transform(0.0f, 1.15 + 8, 0.0f, 0.0f, 0.0f, 90.0f + wdz, .25, 1.0f, 1.0f);
-            //windmill_blades(cube, lightingShader, lightingShaderWithTexture, model);
-            ////windmill blades 
-            //model = transform(0.0f, 1.15 + 8, 0.0f, 0.0f, 0.0f, 180.0f + wdz, .25, 1.0f, 1.0f);
-            //windmill_blades(cube, lightingShader, lightingShaderWithTexture, model);
-            ////windmill blades 
-            //model = transform(0.0f, 1.15 + 8, 0.0f, 0.0f, 0.0f, 270.0f + wdz, .25, 1.0f, 1.0f);
-            //windmill_blades(cube, lightingShader, lightingShaderWithTexture, model);
-            //wdz += .25;
-        //}
 
         model = transform(-23.0f, 1.15 - 1.15, 02.0f, 0.0f, 0.0f, 0.0f, 1, 1.0f, 1.0f);
         windmill_body(cube,wheel, wheel_hollow, lightingShader, lightingShaderWithTexture, model);
@@ -805,8 +799,23 @@ int main()
         //make_boat(cube, wheel, wheel_hollow, boat, lightingShader, lightingShaderWithTexture, model);
 
 
-        //model = transform(10.0f, 1.15 +10, 02.0f, 0.0f, 0.0f, 0.0f, 1, 1.0f, 1.0f);
+        //model = transform(10.0f, 1.15 +100, 30.0f, 0.0f, 0.0f, 0.0f, 1, 1.0f, 1.0f);
         //make_tree(cube, wheel, wheel_hollow, tree, lightingShader, lightingShaderWithTexture, model);
+
+        //model = transform(7.0f, 1.15 + 48.5, 5.0f, 0.0f, 0.0f, 0.0f, 1, 1.0f, 1.0f);
+        //make_tree(cube, wheel, wheel_hollow, tree, lightingShader, lightingShaderWithTexture, model);
+
+        float px = 0;
+        float ry = 0;
+        for (int i = 0; i < 7; i++)
+        {
+            model = transform(-24.0f + px, 1, 8.2f, 0.0f, 0.0f + ry, 0.0f, 1.2, 1.2, 1.2);
+            make_tree2(cube, wheel, wheel_hollow, tree2, lightingShader, lightingShaderWithTexture, model);
+            px += 8;
+            ry += 60;
+        }
+
+
 
 //        //sphere
 //        float px = -35 * glm::cos(glm::radians(sun_rotate_y)) ;
@@ -1299,9 +1308,86 @@ void make_tree(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Curve& tre
     glm::mat4 model;
 
     //tree
-    model = transform(0, 0, 0, 180, 0, 0, 7, 2, 1.5);
+    model = transform(0, 0, 0, 180, 0, 0, 1, 25, 1);
+    tree.setTextureProperty(ch_wood_tex, ch_wood_tex, 1.0f);
     tree.draw(lightingShaderWithTexture, alTogether * model, glm::vec3(0.0f, 0.0f, 0.0f));
 
+}
+
+void make_tree2(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Curve& tree, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether)
+{
+    glm::mat4 model;
+
+    float sx = 3 ,sy = 4, sz = 3;
+    float pos = 1.6;
+    tree.setTextureProperty(leaf_tex,leaf_tex, 1.0f);
+
+
+    //tree1
+    model = transform(pos, 0, pos, 0, 0, 0, sx, sy, sz);
+    //tree.setTextureProperty(ch_wood_tex, ch_wood_tex, 1.0f);
+    tree.draw(lightingShaderWithTexture, alTogether * model, glm::vec3(0.0f, 0.0f, 0.0f));
+
+    //tree2
+    model = transform(-pos, 0, pos, 0, 0, 0, sx, sy, sz);
+    //tree.setTextureProperty(ch_wood_tex, ch_wood_tex, 1.0f);
+    tree.draw(lightingShaderWithTexture, alTogether * model, glm::vec3(0.0f, 0.0f, 0.0f));
+
+    //tree3
+    model = transform(0, 0, -pos, 0, 0, 0, sx, sy, sz);
+    //tree.setTextureProperty(ch_wood_tex, ch_wood_tex, 1.0f);
+    tree.draw(lightingShaderWithTexture, alTogether * model, glm::vec3(0.0f, 0.0f, 0.0f));
+//
+    sx *= .7;
+    sz *= .7;
+    //tree1
+    model = transform(pos, 1, pos, 0, 0, 0, sx, sy, sz);
+    //tree.setTextureProperty(ch_wood_tex, ch_wood_tex, 1.0f);
+    tree.draw(lightingShaderWithTexture, alTogether * model, glm::vec3(0.0f, 0.0f, 0.0f));
+
+    //tree2
+    model = transform(-pos, 1, pos, 0, 0, 0, sx, sy, sz);
+    //tree.setTextureProperty(ch_wood_tex, ch_wood_tex, 1.0f);
+    tree.draw(lightingShaderWithTexture, alTogether * model, glm::vec3(0.0f, 0.0f, 0.0f));
+
+    //tree3
+    model = transform(0, 1, -pos, 0, 0, 0, sx, sy, sz);
+    //tree.setTextureProperty(ch_wood_tex, ch_wood_tex, 1.0f);
+    tree.draw(lightingShaderWithTexture, alTogether * model, glm::vec3(0.0f, 0.0f, 0.0f));
+
+    //
+    sx *= .5;
+    sz *= .5;
+    //tree1
+    model = transform(pos, 1.3, pos, 0, 0, 0, sx, sy, sz);
+    //tree.setTextureProperty(ch_wood_tex, ch_wood_tex, 1.0f);
+    tree.draw(lightingShaderWithTexture, alTogether * model, glm::vec3(0.0f, 0.0f, 0.0f));
+
+    //tree2
+    model = transform(-pos, 1.3, pos, 0, 0, 0, sx, sy, sz);
+    //tree.setTextureProperty(ch_wood_tex, ch_wood_tex, 1.0f);
+    tree.draw(lightingShaderWithTexture, alTogether * model, glm::vec3(0.0f, 0.0f, 0.0f));
+
+    //tree3
+    model = transform(0, 1.3, -pos, 0, 0, 0, sx, sy, sz);
+    //tree.setTextureProperty(ch_wood_tex, ch_wood_tex, 1.0f);
+    tree.draw(lightingShaderWithTexture, alTogether * model, glm::vec3(0.0f, 0.0f, 0.0f));
+
+
+    //tree body x3
+    pos = 1.6;
+    float cyl_sx = 1;
+    curve_cyl.setTextureProperty(ch_wood_tex, ch_wood_tex, 1.0f);
+    model = transform(pos, -5, pos, 0, 0, 0, cyl_sx,4, cyl_sx);
+    curve_cyl.draw(lightingShaderWithTexture, alTogether * model, glm::vec3(0.0f, 0.0f, 0.0f));
+
+    curve_cyl.setTextureProperty(ch_wood_tex, ch_wood_tex, 1.0f);
+    model = transform(-pos, -5, pos, 0, 0, 0, cyl_sx, 4, cyl_sx);
+    curve_cyl.draw(lightingShaderWithTexture, alTogether * model, glm::vec3(0.0f, 0.0f, 0.0f));
+
+    curve_cyl.setTextureProperty(ch_wood_tex, ch_wood_tex, 1.0f);
+    model = transform(0, -5, -pos, 0, 0, 0, cyl_sx, 4, cyl_sx);
+    curve_cyl.draw(lightingShaderWithTexture, alTogether * model, glm::vec3(0.0f, 0.0f, 0.0f));
 }
 
 void make_boat(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Curve& tree, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether)

@@ -51,7 +51,7 @@ public:
         glDeleteBuffers(1, &bezierVBO);
         glDeleteBuffers(1, &bezierEBO);
     }
-    void draw(Shader& lightingShader, glm::mat4 model, glm::vec3 amb)
+    void draw(Shader& lightingShader, glm::mat4 model, glm::vec3 amb = glm::vec3(1.0f, 1.0f, 1.0f))
     {
         lightingShader.use();
         lightingShader.setMat4("model", model);

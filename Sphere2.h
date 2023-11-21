@@ -1,10 +1,3 @@
-//
-//  sphere.h
-//  test
-//
-//  Papon
-//
-
 #include <glad/glad.h>
 #include <vector>
 #include <glm/glm.hpp>
