@@ -18,6 +18,7 @@
 #include "spotLight.h"
 #include "cube.h"
 #include "curve.h"
+#include "Sphere2.h"
 #include "stb_image.h"
 
 #include <iostream>
@@ -62,6 +63,7 @@ void windmill_body(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Shader
 void road(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
 void make_boat(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Curve& tree, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
 void make_tree(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Curve& tree, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
+void sun_rotate(Sphere2& sphere, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
 
 
 
@@ -102,6 +104,7 @@ unsigned int almari_tex;
 unsigned int cushion_tex;
 unsigned int black_tex;
 
+
 unsigned int bus_side_right_tex;
 unsigned int bus_side_left_tex;
 unsigned int bus_front_tex;
@@ -110,6 +113,8 @@ unsigned int road_tex;
 unsigned int stone_tex;
 unsigned int sq_tile_tex;
 //unsigned int road_tex;
+unsigned int sun_tex;
+
 
 
 Camera camera(glm::vec3(0.0f, 3.1f, 13.0f));
@@ -225,6 +230,8 @@ bool bus_move_fl1 = false;
 bool bus_move_fl2 = false;
 float bus_move_tx1 = 1.0f;
 float bus_move_tx2 = 1.0f;
+float sun_rotate_y = 0.5f;
+float sun_rotate_axis = 0.5f;
 
 
 // timing
@@ -386,6 +393,8 @@ int main()
     string         road_o = "road.jpg";
     string         stone  = "stone_ground.jpg";
     string        sq_tile = "sq_tile.jpg";
+    string        sunP = "sun.png";
+
 
 
     //bus_side_right_tex = loadTexture(bus_side_right.c_str(), GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
@@ -418,7 +427,8 @@ int main()
     road_tex = loadTexture(road_o.c_str(), GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
     stone_tex = loadTexture(stone.c_str(), GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
     sq_tile_tex = loadTexture(sq_tile.c_str(), GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
-    
+    sun_tex = loadTexture(sunP.c_str(), GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
+
 
 
 
@@ -432,7 +442,9 @@ int main()
 
 
 
-    //Sphere sphere = Sphere();
+    //Sphere2 sphere = Sphere2() ;
+    //sphere.setDefaults();
+    Sphere2  sphere= Sphere2(3.0f, 144, 72, glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.5f, 0.5f, 0.5f), 32.0f, ch_wood_tex,ch_wood_tex, 0.0f, 0.0f, 20.0f, 20.0f);
 
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -793,16 +805,35 @@ int main()
 
         
 
-        model = transform(10.0f, 1.15 + 10, 02.0f, 0.0f, 0.0f, 0.0f, 1, 1.0f, 1.0f);
-        make_boat(cube, wheel, wheel_hollow, boat, lightingShader, lightingShaderWithTexture, model);
+        //model = transform(10.0f, 1.15 + 10, 02.0f, 0.0f, 0.0f, 0.0f, 1, 1.0f, 1.0f);
+        //make_boat(cube, wheel, wheel_hollow, boat, lightingShader, lightingShaderWithTexture, model);
 
 
         //model = transform(10.0f, 1.15 +10, 02.0f, 0.0f, 0.0f, 0.0f, 1, 1.0f, 1.0f);
         //make_tree(cube, wheel, wheel_hollow, tree, lightingShader, lightingShaderWithTexture, model);
 
+//        //sphere
+//        float px = -35 * glm::cos(glm::radians(sun_rotate_y)) ;
+//        float pz = -35 * glm::sin(glm::radians(sun_rotate_y));
+////        
+//        //own axis rotation
+//        model = transform(10.0f, 10, 02.0f, 0.0f, 0.0f+ sun_rotate_axis, 0.0f, 1, 1.0f, 1.0f);
+//        sphere.setRadius(5);
+//        sphere.setTextureProperty(sun_tex, sun_tex, 1.0f);
+//        sphere.drawSphereWithTexture(lightingShaderWithTexture, model);
+//        sun_rotate_axis += .25;
+////
+//        //around y rotate
+//        model = transform(0,0,0, 0.0f, 0.0f, 0.0f, 1, 1.0f, 1.0f) * model;
+//        model = transform(px, 12, pz, 0.0f, 0.0f + sun_rotate_y, 0.0f, 1, 1.0f, 1.0f) * model ;
+//        sphere.setRadius(5);
+//        sphere.setTextureProperty(sun_tex, sun_tex, 1.0f);
+//        sphere.drawSphereWithTexture(lightingShaderWithTexture, model);
+//        sun_rotate_y += .25;
 
 
-
+        model = transform(0,0,0, 0.0f, 0.0f, 0.0f, 1, 1.0f, 1.0f) ;
+        sun_rotate(sphere, lightingShader, lightingShaderWithTexture, model);
 
         //`
 
@@ -1291,6 +1322,29 @@ void make_boat(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Curve& tre
 
 }
 
+void sun_rotate(Sphere2& sphere, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether)
+{
+    glm::mat4 model;
+
+    //sphere
+    float px = -35 * glm::cos(glm::radians(sun_rotate_y));
+    float pz = -35 * glm::sin(glm::radians(sun_rotate_y));
+    //        
+            //own axis rotation
+    model = transform(10.0f, 10, 02.0f, 0.0f, 0.0f + sun_rotate_axis, 0.0f, 1, 1.0f, 1.0f);
+    sphere.setRadius(5);
+    sphere.setTextureProperty(sun_tex, sun_tex, 1.0f);
+    sphere.drawSphereWithTexture(lightingShaderWithTexture, model);
+    sun_rotate_axis += .25;
+    //
+            //around y rotate
+    model = transform(0, 0, 0, 0.0f, 0.0f, 0.0f, 1, 1.0f, 1.0f) * model;
+    model = transform(px, 12, pz, 0.0f, 0.0f + sun_rotate_y, 0.0f, 1, 1.0f, 1.0f) * model;
+    sphere.setRadius(5);
+    sphere.setTextureProperty(sun_tex, sun_tex, 1.0f);
+    sphere.drawSphereWithTexture(lightingShaderWithTexture, model);
+    sun_rotate_y += .25;
+}
 
 void road(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether)
 {
