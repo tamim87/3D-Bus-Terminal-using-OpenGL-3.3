@@ -1327,23 +1327,27 @@ void sun_rotate(Sphere2& sphere, Shader& lightingShader, Shader& lightingShaderW
     glm::mat4 model;
 
     //sphere
-    float px = -35 * glm::cos(glm::radians(sun_rotate_y));
-    float pz = -35 * glm::sin(glm::radians(sun_rotate_y));
-    //        
-            //own axis rotation
-    model = transform(10.0f, 10, 02.0f, 0.0f, 0.0f + sun_rotate_axis, 0.0f, 1, 1.0f, 1.0f);
+    float px = 42.4 * glm::cos(glm::radians(sun_rotate_y));
+    float pz = 42.4 * glm::sin(glm::radians(sun_rotate_y));
+    
+    ////testing for own axis rotation
+    //model = transform(10.0f, 10, 2.0f, 0.0f, 0.0f + sun_rotate_axis, 0.0f, 1, 1.0f, 1.0f);
+    //sphere.setRadius(5);
+    //sphere.setTextureProperty(sun_tex, sun_tex, 1.0f);
+    //sphere.drawSphereWithTexture(lightingShaderWithTexture, model);
+    //sun_rotate_axis += .28;
+    
+
+    //own axis rotation
+    model = transform(0,0,0, 0.0f, 0.0f + sun_rotate_axis, 0.0f, 1, 1.0f, 1.0f);
+    sun_rotate_axis += .28;
+
+    //around y rotate
+    model = transform(px, 20, pz, 0.0f, 0.0f + sun_rotate_y, 0.0f, 1, 1.0f, 1.0f) * model;
     sphere.setRadius(5);
     sphere.setTextureProperty(sun_tex, sun_tex, 1.0f);
     sphere.drawSphereWithTexture(lightingShaderWithTexture, model);
-    sun_rotate_axis += .25;
-    //
-            //around y rotate
-    model = transform(0, 0, 0, 0.0f, 0.0f, 0.0f, 1, 1.0f, 1.0f) * model;
-    model = transform(px, 12, pz, 0.0f, 0.0f + sun_rotate_y, 0.0f, 1, 1.0f, 1.0f) * model;
-    sphere.setRadius(5);
-    sphere.setTextureProperty(sun_tex, sun_tex, 1.0f);
-    sphere.drawSphereWithTexture(lightingShaderWithTexture, model);
-    sun_rotate_y += .25;
+    sun_rotate_y += .28;
 }
 
 void road(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether)
