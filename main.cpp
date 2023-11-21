@@ -129,7 +129,7 @@ glm::vec3 V = glm::vec3(0.0f, 1.0f, 0.0f);
 // lights
 // positions of the point lights
 glm::vec3 LightPositions[] = {
-    glm::vec3(35.0, 20.0, 35.0), //directional light1 - white
+    glm::vec3(30.0, 20.0, 35.0), //directional light1 - white
     glm::vec3(-5.12181 ,4.92 ,13.1597), //spot light - red
     glm::vec3(-6.75269 ,4.92 ,2.44401), //point light1 - green
     glm::vec3(8 ,14.0 ,-4), //point light2 - blue
@@ -198,7 +198,7 @@ PointLight pointlight3(
 DirLight dirlight2(
     LightPositions[5].x, LightPositions[5].y, LightPositions[5].z,  // position
     0.05f, 0.05f, 0.05f,     // ambient
-    0.8f, 0.8f, 0.8f,     // diffuse
+    1.5f, 1.5f, 1.5f,     // diffuse
     1.0f, 1.0f, 1.0f,        // specular
     //0.0f, 0.0f, 0.0f,        // emission
     1.0f,   //k_c
@@ -257,10 +257,6 @@ vector<float>wheel_vertices = {
 };
 
 vector<float>hollow_cyllinder_vertices = 
-//{
-//    -0.2550, 1.6600, 5.1000,
-//    -0.8050, 0.9150, 5.1000
-//};
 {
     -0.4900, 1.9100, 5.1000,
     -1.5750, 1.7800, 5.1000,
@@ -1348,6 +1344,13 @@ void sun_rotate(Sphere2& sphere, Shader& lightingShader, Shader& lightingShaderW
     sphere.setTextureProperty(sun_tex, sun_tex, 1.0f);
     sphere.drawSphereWithTexture(lightingShaderWithTexture, model);
     sun_rotate_y += .28;
+
+    //dirlight1.setUpPointLight(lightingShaderWithTexture);
+    //dirlight1.setUpPointLight(lightingShaderWithTexture);
+    dirlight2.upd_dirlight_pos(lightingShaderWithTexture, px+8, 20+10, pz+8, 1);
+
+
+
 }
 
 void road(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether)

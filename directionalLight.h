@@ -57,6 +57,17 @@ public:
             lightingShader.setFloat("dirLight[1].k_q", k_q);
         }
     }
+    void upd_dirlight_pos( Shader& lightingShader, float posX, float posY, float posZ, int num)
+    {
+        lightingShader.use();
+        position = glm::vec3(posX, posY, posZ);
+        if (lightNumber == 1) {
+            lightingShader.setVec3("dirLight[0].position", position);
+        }
+        else if (lightNumber == 2) {
+            lightingShader.setVec3("dirLight[1].position", position);
+        }
+    }
     void turnOff()
     {
         ambientOn = 0.0;
