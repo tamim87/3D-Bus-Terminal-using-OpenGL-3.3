@@ -1240,6 +1240,7 @@ void Wheel(Curve& curve_cyl, Curve& curve_circle, Shader& lightingShader, glm::m
 void Wheel_hollow(Curve& curve_cyl, Curve& curve_hollow_cyl, Cube& cube_cyl, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether)
 {
     glm::mat4 model;
+    curve_hollow_cyl.setTextureProperty(black_tex,black_tex, 1.0f);
 
     //cyllinder
     model = transform(0, 0, 0, 0, 0, 0, 1, 1, 1);
@@ -1315,6 +1316,7 @@ void windmill_body(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Shader
 
     //hollow cyllinder for stand
     model = transform(0, -178, 0, 0, 0, 0, .465, .05 + 100, .465);
+    //curve_hollow_cyl.setTextureProperty(almari_tex, almari_tex, 1.0f);
     curve_hollow_cyl.draw(lightingShaderWithTexture, alTogether * model, glm::vec3(1.0f, 0.0f, 0.0f));
 
     //stand notch

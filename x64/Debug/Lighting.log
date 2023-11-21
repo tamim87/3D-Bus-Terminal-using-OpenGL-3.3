@@ -1,10 +1,10 @@
 ﻿  main.cpp
-C:\Users\User\Desktop\graphics project\curve.h(147,37): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\curve.h(147,28): warning C4244: 'initializing': conversion from 'double' to 'const float', possible loss of data
-C:\Users\User\Desktop\graphics project\curve.h(150,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\curve.h(160,29): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\curve.h(166,23): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\curve.h(167,23): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\curve.h(154,37): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\curve.h(154,28): warning C4244: 'initializing': conversion from 'double' to 'const float', possible loss of data
+C:\Users\User\Desktop\graphics project\curve.h(157,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\curve.h(167,29): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\curve.h(173,23): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\curve.h(174,23): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 C:\Users\User\Desktop\graphics project\main.cpp(237,5): warning C4305: 'initializing': truncation from 'double' to '_Ty'
           with
           [
@@ -604,90 +604,90 @@ C:\Users\User\Desktop\graphics project\main.cpp(505,81): warning C4101: 'scaleMa
 C:\Users\User\Desktop\graphics project\main.cpp(1230,27): warning C4305: 'argument': truncation from 'double' to 'float'
 C:\Users\User\Desktop\graphics project\main.cpp(1235,51): warning C4305: 'argument': truncation from 'double' to 'float'
 C:\Users\User\Desktop\graphics project\main.cpp(1235,27): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1249,55): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1249,50): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1249,44): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1249,26): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1253,56): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1253,51): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1253,44): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1253,26): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1257,60): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1257,55): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1257,50): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1257,36): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1257,24): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1262,60): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1262,55): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1262,50): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1262,36): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1262,29): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1262,24): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1317,61): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1317,54): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1317,44): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1321,34): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1331,34): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1334,34): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1337,34): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1340,34): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1355,64): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1366,20): warning C4305: '+=': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1426,18): warning C4305: '-=': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1433,18): warning C4305: '-=': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1440,18): warning C4305: '-=': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1449,77): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1449,39): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1459,78): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1459,39): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1470,76): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1470,33): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1481,74): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1481,31): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1497,77): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1497,47): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1497,42): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1538,72): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1543,72): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1551,72): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1551,61): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1555,73): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1555,62): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1618,65): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1629,20): warning C4305: '+=': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1642,67): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1653,20): warning C4305: '+=': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1660,63): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1787,111): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1787,83): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1787,38): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1792,83): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1792,38): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1797,82): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1797,38): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1809,122): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1809,94): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1809,48): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1850,127): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1850,99): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1850,67): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1850,51): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1850,31): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1855,128): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1855,100): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1855,68): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Desktop\graphics project\main.cpp(1855,52): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1855,31): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1890,137): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1890,109): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1890,77): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1890,51): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1890,31): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1895,138): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1895,110): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1895,78): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1895,52): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1895,31): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1928,44): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\User\Desktop\graphics project\main.cpp(1932,51): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1250,55): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1250,50): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1250,44): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1250,26): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1254,56): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1254,51): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1254,44): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1254,26): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1258,60): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1258,55): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1258,50): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1258,36): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1258,24): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1263,60): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1263,55): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1263,50): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1263,36): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1263,29): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1263,24): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1318,61): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1318,54): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1318,44): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1323,34): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1333,34): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1336,34): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1339,34): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1342,34): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1357,64): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1368,20): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1428,18): warning C4305: '-=': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1435,18): warning C4305: '-=': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1442,18): warning C4305: '-=': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1451,77): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1451,39): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1461,78): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1461,39): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1472,76): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1472,33): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1483,74): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1483,31): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1499,77): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1499,47): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1499,42): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1540,72): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1545,72): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1553,72): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1553,61): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1557,73): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1557,62): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1620,65): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1631,20): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1644,67): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1655,20): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1662,63): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1789,111): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1789,83): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1789,38): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1794,83): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1794,38): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1799,82): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1799,38): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1811,122): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1811,94): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1811,48): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1852,127): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1852,99): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1852,67): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1852,51): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1852,31): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1857,128): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1857,100): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1857,68): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\User\Desktop\graphics project\main.cpp(1857,52): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1857,31): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1892,137): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1892,109): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1892,77): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1892,51): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1892,31): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1897,138): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1897,110): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1897,78): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1897,52): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1897,31): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1930,44): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Desktop\graphics project\main.cpp(1934,51): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
   Lighting.vcxproj -> C:\Users\User\Desktop\graphics project\x64\Debug\Lighting.exe

@@ -76,6 +76,13 @@ public:
         // unbind VAO
         glBindVertexArray(0);
     }
+    void setTextureProperty(unsigned int dMap, unsigned int sMap, float shiny)
+    {
+        this->diffuseMap = dMap;
+        this->specularMap = sMap;
+        this->shininess = shiny;
+    }
+
 
 private:
     unsigned int fishVAO;
