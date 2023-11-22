@@ -55,6 +55,7 @@ void windmill_blades(Cube& cube, Shader& lightingShader, Shader& lightingShaderW
 void windmill_body(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
 void road(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
 void ticket_counter(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
+void sbox(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
 void fence(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
 void make_boat(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Curve& tree, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
 void make_tree(Cube& cube, Curve& curve_cyl, Curve& curve_hollow_cyl, Curve& tree, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether);
@@ -111,6 +112,7 @@ unsigned int sq_tile_tex;
 //unsigned int road_tex;
 unsigned int sun_tex;
 unsigned int leaf_tex;
+unsigned int marbel_tex;
 
 
 
@@ -128,7 +130,7 @@ glm::vec3 V = glm::vec3(0.0f, 1.0f, 0.0f);
 // positions of the point lights
 glm::vec3 LightPositions[] = {
     glm::vec3(30.0, 20.0, 35.0), //directional light1 - white
-    glm::vec3(-5.12181 ,4.92 ,13.1597), //spot light - red
+    glm::vec3(-30 ,5.92 ,13.-20), //spot light - red
     glm::vec3(-40,-4.92 ,-40), //point light1 - green
     glm::vec3(8 ,14.0 ,-4), //point light2 - blue
     glm::vec3(4.36687 ,14.0 ,5.62477 ), //point light3 - yellow
@@ -351,7 +353,7 @@ int main()
     glfwSetScrollCallback(window, scroll_callback);
 
     // tell GLFW to capture our mouse
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
     // glad: load all OpenGL function pointers
     // ---------------------------------------
@@ -418,7 +420,7 @@ int main()
     //unsigned int wood_tex = loadTexture(wood.c_str(), GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
     //unsigned int woods_tex = loadTexture(woods.c_str(), GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
     //unsigned int sofa_tex = loadTexture(sofa.c_str(), GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
-    //unsigned int marbel_tex = loadTexture(marbel.c_str(), GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
+    marbel_tex = loadTexture(marbel.c_str(), GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
     //unsigned int plywood_tex = loadTexture(plywood.c_str(), GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
     //unsigned int chair_tex = loadTexture(chair.c_str(), GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
     //unsigned int wall_tex = loadTexture(wall.c_str(), GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
@@ -486,7 +488,7 @@ int main()
 
         // render
         // ------
-        glClearColor(0.435f, 0.675f, 0.949f, 1.0f);
+        //glClearColor(0.435f, 0.675f, 0.949f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // be sure to activate shader when setting uniforms/drawing objects
@@ -857,9 +859,21 @@ int main()
         cube.setTextureProperty(black_tex, black_tex, 32.0f);
         fence(cube, lightingShader, lightingShaderWithTexture, model);
 
+        //ticket counter
         model = transform(-30, 0, 23, 0, 90, 0.0f, .75, .75, .75);
         //model = transform(0,0,0, 0, 0, 0.0f, 1,1,1);
         ticket_counter(cube, lightingShader, lightingShaderWithTexture, model);
+
+        //sbox
+        float a = 240, s = 120;
+        
+        model = transform(-a / 2, -a / 2, a / 2, 0, 0, 0, s, s, 1);
+        cube.setTextureProperty(almari_tex, almari_tex, 1.0f);
+        cube.drawCubeWithTexture(lightingShaderWithTexture, model);
+        //sbox(cube, lightingShader, lightingShaderWithTexture, model);
+        model = transform(a / 2, -a / 2, a / 2, 0, 0, 0, 1, s, s);
+        cube.drawCubeWithTexture(lightingShaderWithTexture, model);
+        //sbox(cube, lightingShader, lightingShaderWithTexture, model);
 
 
         //`
@@ -1001,11 +1015,13 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
         if (dirLightOn1)
         {
             dirlight1.turnOff();
+            glClearColor(0.0f,0.0f,0.0f,1.0f);
             dirLightOn1 = !dirLightOn1;
         }
         else
         {
             dirlight1.turnOn();
+            glClearColor(0.435f, 0.675f, 0.949f, 1.0f);
             dirLightOn1 = !dirLightOn1;
         }
     }
@@ -1461,6 +1477,11 @@ void sun_rotate(Sphere2& sphere, Shader& lightingShader, Shader& lightingShaderW
 
 }
 
+void sbox(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether)
+{
+
+}
+
 void ticket_counter(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithTexture, glm::mat4 alTogether)
 {
     glm::mat4 model;
@@ -1473,35 +1494,35 @@ void ticket_counter(Cube& cube, Shader& lightingShader, Shader& lightingShaderWi
 
     //back1
     model = transform(12, baseHeight, 4, 0.0f, 0.0f, 0.0f, 4, 10, baseHeight + .8);
-    cube.setTextureProperty(road_tex, road_tex, 32.0f);
+    cube.setTextureProperty(marbel_tex, marbel_tex, 32.0f);
     cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
     //cube.setMaterialisticProperty(glm::vec3(0.553, 0.804, 0.91));
     //cube.drawCubeWithMaterialisticProperty(lightingShader, alTogether * model);
 
     //back2
     model = transform(12 + 4, baseHeight, 4, 0.0f, 0.0f, 0.0f, 4, 10, baseHeight + .8);
-    cube.setTextureProperty(road_tex, road_tex, 32.0f);
+    cube.setTextureProperty(marbel_tex, marbel_tex, 32.0f);
     cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
     //cube.setMaterialisticProperty(glm::vec3(0.447, 0.757, 0.89));
     //cube.drawCubeWithMaterialisticProperty(lightingShader, alTogether * model);
 
     //back3
     model = transform(12 + 4 + 4, baseHeight, 4, 0.0f, 0.0f, 0.0f, 4, 10, baseHeight + .8);
-    cube.setTextureProperty(road_tex, road_tex, 32.0f);
+    cube.setTextureProperty(marbel_tex, marbel_tex, 32.0f);
     cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
     //cube.setMaterialisticProperty(glm::vec3(0.325, 0.706, 0.871));
     //cube.drawCubeWithMaterialisticProperty(lightingShader, alTogether * model);
 
     //back4
     model = transform(12 + 4 + 4 + 4, baseHeight, 4, 0.0f, 0.0f, 0.0f, 4, 10, baseHeight + .8);
-    cube.setTextureProperty(road_tex, road_tex, 32.0f);
+    cube.setTextureProperty(marbel_tex, marbel_tex, 32.0f);
     cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
     //cube.setMaterialisticProperty(glm::vec3(0.188, 0.667, 0.871));
     //cube.drawCubeWithMaterialisticProperty(lightingShader, alTogether * model);
 
     //cover
     model = transform(12 - 1, baseHeight + 10, 4 - 1, 0.0f, 0.0f, 0.0f, 16 + 2, baseHeight + .6, 8);
-    cube.setTextureProperty(road_tex, road_tex, 32.0f);
+    cube.setTextureProperty(marbel_tex, marbel_tex, 32.0f);
     cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
     //cube.setMaterialisticProperty(glm::vec3(0.188, 0.667, 0.871));
     //cube.drawCubeWithMaterialisticProperty(lightingShader, alTogether * model);
@@ -1511,7 +1532,7 @@ void ticket_counter(Cube& cube, Shader& lightingShader, Shader& lightingShaderWi
     tz = 0;
     //bench
     model = transform(12 + 1 + tx, ty + baseHeight + 10 - 6, tz + 4 - 1 + 1.8, 0.0f, 0.0f, 0.0f, 16 + 2 - 4, baseHeight + .2 + .2, 8 - 5);
-    cube.setTextureProperty(road_tex, road_tex, 32.0f);
+    cube.setTextureProperty(black_tex,black_tex, 32.0f);
     cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
     //cube.setMaterialisticProperty(glm::vec3(0.616, 0.667, 0.69));
     //cube.drawCubeWithMaterialisticProperty(lightingShader, alTogether * model);
@@ -1886,12 +1907,12 @@ void terminal(Cube& cube, Shader& lightingShader, Shader& lightingShaderWithText
 
     //surface l2
     model = transform(0.0f, 8.0f, 0.0f, 0.0f, 0.0f, 0.0f, 20.0f, .35f, 8.0f);
-    cube.setTextureProperty(black_tex, black_tex, 32.0f);
+    cube.setTextureProperty(marbel_tex, marbel_tex, 32.0f);
     cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
 
     //vertical surface l2
     model = transform(20.0f, 8.0f, 0.0f, 0.0f, 0.0f, 0.0f, 9.0f, .35f, 24.0f);
-    cube.setTextureProperty(black_tex, black_tex, 32.0f);
+    cube.setTextureProperty(marbel_tex, marbel_tex, 32.0f);
     cube.drawCubeWithTexture(lightingShaderWithTexture, alTogether * model);
 
 
