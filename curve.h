@@ -1,10 +1,3 @@
-//
-//  curve.h
-//  test
-//
-//  Created by Papon
-//
-
 #ifndef curve_h
 #define curve_h
 

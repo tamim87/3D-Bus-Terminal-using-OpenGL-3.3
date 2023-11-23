@@ -1,11 +1,4 @@
 #pragma once
-//
-//  pointLight.h
-//  test
-//
-//  Created by Nazirul Hasan on 22/9/23.
-//
-
 #ifndef spotLight_h
 #define spotLight_h
 
@@ -38,14 +31,33 @@ public:
     void setUpPointLight(Shader& lightingShader)
     {
         lightingShader.use();
-
-        lightingShader.setVec3("spotLight.position", position);
-        lightingShader.setVec3("spotLight.ambient", ambientOn * ambient);
-        lightingShader.setVec3("spotLight.diffuse", diffuseOn * diffuse);
-        lightingShader.setVec3("spotLight.specular", specularOn * specular);
-        lightingShader.setFloat("spotLight.k_c", k_c);
-        lightingShader.setFloat("spotLight.k_l", k_l);
-        lightingShader.setFloat("spotLight.k_q", k_q);
+        if (lightNumber == 1) {
+            lightingShader.setVec3("spotLight[0].position", position);
+            lightingShader.setVec3("spotLight[0].ambient", ambientOn * ambient);
+            lightingShader.setVec3("spotLight[0].diffuse", diffuseOn * diffuse);
+            lightingShader.setVec3("spotLight[0].specular", specularOn * specular);
+            lightingShader.setFloat("spotLight[0].k_c", k_c);
+            lightingShader.setFloat("spotLight[0].k_l", k_l);
+            lightingShader.setFloat("spotLight[0].k_q", k_q);
+        }
+        else if (lightNumber == 2) {
+            lightingShader.setVec3("spotLight[1].position", position);
+            lightingShader.setVec3("spotLight[1].ambient", ambientOn * ambient);
+            lightingShader.setVec3("spotLight[1].diffuse", diffuseOn * diffuse);
+            lightingShader.setVec3("spotLight[1].specular", specularOn * specular);
+            lightingShader.setFloat("spotLight[1].k_c", k_c);
+            lightingShader.setFloat("spotLight[1].k_l", k_l);
+            lightingShader.setFloat("spotLight[1].k_q", k_q);
+        }
+        else if (lightNumber == 3) {
+            lightingShader.setVec3("spotLight[2].position", position);
+            lightingShader.setVec3("spotLight[2].ambient", ambientOn * ambient);
+            lightingShader.setVec3("spotLight[2].diffuse", diffuseOn * diffuse);
+            lightingShader.setVec3("spotLight[2].specular", specularOn * specular);
+            lightingShader.setFloat("spotLight[2].k_c", k_c);
+            lightingShader.setFloat("spotLight[2].k_l", k_l);
+            lightingShader.setFloat("spotLight[2].k_q", k_q);
+        }
 
     }
     void turnOff()

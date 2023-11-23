@@ -1,10 +1,3 @@
-//
-//  pointLight.h
-//  test
-//
-//  Created by Nazirul Hasan on 22/9/23.
-//
-
 #ifndef directionalLight_h
 #define directionalLight_h
 
@@ -56,6 +49,15 @@ public:
             lightingShader.setFloat("dirLight[1].k_l", k_l);
             lightingShader.setFloat("dirLight[1].k_q", k_q);
         }
+        else if (lightNumber == 3) {
+            lightingShader.setVec3("dirLight[2].position", position);
+            lightingShader.setVec3("dirLight[2].ambient", ambientOn * ambient);
+            lightingShader.setVec3("dirLight[2].diffuse", diffuseOn * diffuse);
+            lightingShader.setVec3("dirLight[2].specular", specularOn * specular);
+            lightingShader.setFloat("dirLight[2].k_c", k_c);
+            lightingShader.setFloat("dirLight[2].k_l", k_l);
+            lightingShader.setFloat("dirLight[2].k_q", k_q);
+        }
     }
     void upd_dirlight_pos( Shader& lightingShader, float posX, float posY, float posZ, int num)
     {
@@ -66,6 +68,9 @@ public:
         }
         else if (lightNumber == 2) {
             lightingShader.setVec3("dirLight[1].position", position);
+        }
+        else if (lightNumber == 3) {
+            lightingShader.setVec3("dirLight[2].position", position);
         }
     }
     void turnOff()

@@ -1,10 +1,3 @@
-//
-//  basic_camera.h
-//  test
-//
-//  Created by Nazirul Hasan on 10/9/23.
-//
-
 #ifndef basic_camera_h
 #define basic_camera_h
 
