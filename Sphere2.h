@@ -39,9 +39,9 @@ public:
     }
     ~Sphere2() {}
     // getters/setters
- /*   void toggleEmissive() {
-        this->emissive = glm::vec3(1.0f, 0.0f, 0.0f);
-    }*/
+    //void toggleEmissive() {
+    //    this->emissive = glm::vec3(1.0f, 0.0f, 0.0f);
+    //}
     void setDefaults() {
         this->radius = 1.0f;
         this->sectorCount = 36;

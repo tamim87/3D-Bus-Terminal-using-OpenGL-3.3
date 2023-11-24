@@ -1,10 +1,3 @@
-//
-//  pointLight.h
-//  test
-//
-//  Created by Nazirul Hasan on 22/9/23.
-//
-
 #ifndef pointLight_h
 #define pointLight_h
 
@@ -77,6 +70,20 @@ public:
             lightingShader.setFloat("pointLights[3].k_c", k_c);
             lightingShader.setFloat("pointLights[3].k_l", k_l);
             lightingShader.setFloat("pointLights[3].k_q", k_q);
+        }
+    }
+    void upd_pointlight_pos(Shader& lightingShader, float posX, float posY, float posZ, int num)
+    {
+        lightingShader.use();
+        position = glm::vec3(posX, posY, posZ);
+        if (lightNumber == 1) {
+            lightingShader.setVec3("pointLights[0].position", position);
+        }
+        else if (lightNumber == 2) {
+            lightingShader.setVec3("pointLights[1].position", position);
+        }
+        else if (lightNumber == 3) {
+            lightingShader.setVec3("pointLights[2].position", position);
         }
     }
     void turnOff()

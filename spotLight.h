@@ -58,7 +58,20 @@ public:
             lightingShader.setFloat("spotLight[2].k_l", k_l);
             lightingShader.setFloat("spotLight[2].k_q", k_q);
         }
-
+    }
+    void upd_spotlight_pos(Shader& lightingShader, float posX, float posY, float posZ, int num)
+    {
+        lightingShader.use();
+        position = glm::vec3(posX, posY, posZ);
+        if (lightNumber == 1) {
+            lightingShader.setVec3("spotLight[0].position", position);
+        }
+        else if (lightNumber == 2) {
+            lightingShader.setVec3("spotLight[1].position", position);
+        }
+        else if (lightNumber == 3) {
+            lightingShader.setVec3("spotLight[2].position", position);
+        }
     }
     void turnOff()
     {
