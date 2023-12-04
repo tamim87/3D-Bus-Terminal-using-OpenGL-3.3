@@ -12,5 +12,4 @@ https://github.com/tamim87/Computer-Graphics-Project/assets/86661703/65fc6312-c1
 
 
 demo:
-https://drive.google.com/drive/folders/1I_s2IHWgH8JSyfiUo3eQuSGVNP68Mbvv
-
+https://www.youtube.com/watch?v=Ka3ayT7Ns2E&list=PLOwPzmmjY3qXykB85xuz9X0pHyZAIz7qN&index=1&pp=iAQB
