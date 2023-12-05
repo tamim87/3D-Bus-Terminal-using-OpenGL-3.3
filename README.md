@@ -8,3 +8,7 @@
 
 demo:
 https://www.youtube.com/watch?v=Ka3ayT7Ns2E&list=PLOwPzmmjY3qXykB85xuz9X0pHyZAIz7qN&index=1&pp=iAQB
+
+
+## License
+[MIT License](https://github.com/tamim87/3D-Bus-Terminal-using-OpenGL-3.3/blob/main/LICENSE) © 3D-Bus-Terminal-using-OpenGL-3.3
